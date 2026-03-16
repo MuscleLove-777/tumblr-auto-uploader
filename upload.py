@@ -119,6 +119,17 @@ def main():
     print(f"Selected: {fname}")
 
     tags = generate_tags(video)
+
+    # Google Trendsからトレンドタグを追加
+    from trending import get_trending_tags
+    trend_tags = get_trending_tags(max_tags=5)
+    if trend_tags:
+        seen = {t.lower() for t in tags}
+        for t in trend_tags:
+            if t.lower() not in seen:
+                tags.append(t)
+                seen.add(t.lower())
+
     caption = build_caption(video, tags)
     print(f"Tags: {', '.join(tags[:10])}...")
 

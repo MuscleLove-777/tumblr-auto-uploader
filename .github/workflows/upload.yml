@@ -21,7 +21,7 @@ jobs:
           python-version: '3.12'
 
       - name: Install dependencies
-        run: pip install pytumblr gdown
+        run: pip install pytumblr gdown pytrends
 
       - name: Run upload
         env:
