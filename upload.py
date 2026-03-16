@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 """
 Tumblr動画ランダムアップロード（GitHub Actions用）
-Google Driveからダウンロード → ランダム1本アップロード → アップロード済みを記録
+Google Driveからダウンロード → ランダム1本アップロード（重複許可）
 """
-import sys, json, os, random
+import sys, os, random
 
 import pytumblr
 import gdown
@@ -13,7 +13,6 @@ BLOG_NAME = "muscular-japanese-girls"
 PATREON_LINK = "https://www.patreon.com/cw/MuscleLove"
 VIDEO_EXTENSIONS = {'.mp4', '.mov', '.avi', '.wmv', '.mkv', '.webm'}
 MAX_FILE_SIZE = 500 * 1024 * 1024
-UPLOADED_LOG = "uploaded.json"
 
 CONTENT_TAG_MAP = {
     'training': ['筋トレ', 'workout', 'training', 'gym', 'fitness'],
@@ -37,17 +36,6 @@ BASE_TAGS = [
     'fbb', 'fitness motivation', 'gym girl', '筋肉女子', '筋トレ女子', 'fitfam',
 ]
 
-
-def load_uploaded_log():
-    if os.path.exists(UPLOADED_LOG):
-        with open(UPLOADED_LOG, 'r') as f:
-            return json.load(f)
-    return []
-
-
-def save_uploaded_log(log):
-    with open(UPLOADED_LOG, 'w') as f:
-        json.dump(log, f, indent=2)
 
 
 def download_videos():
@@ -125,14 +113,8 @@ def main():
         print("No videos found!")
         return 0
 
-    uploaded_log = load_uploaded_log()
-    available = [v for v in videos if os.path.basename(v) not in uploaded_log]
-    if not available:
-        print("All videos already uploaded!")
-        return 0
-
-    print(f"\nAvailable: {len(available)} / Total: {len(videos)}")
-    video = random.choice(available)
+    print(f"\nTotal videos: {len(videos)}")
+    video = random.choice(videos)
     fname = os.path.basename(video)
     print(f"Selected: {fname}")
 
@@ -144,9 +126,6 @@ def main():
         result = client.create_video(BLOG_NAME, data=video, caption=caption, tags=tags)
         if isinstance(result, dict) and ('id' in result or (result.get('meta', {}).get('status') == 201)):
             print(f"Success! {result.get('id', '')}")
-            uploaded_log.append(fname)
-            save_uploaded_log(uploaded_log)
-            print(f"Remaining: {len(available) - 1}")
             return 0
         else:
             print(f"Failed: {result}")
