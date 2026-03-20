@@ -34,6 +34,9 @@ CONTENT_TAG_MAP = {
 BASE_TAGS = [
     'muscle girl', 'muscular woman', 'female muscle', 'strong women',
     'fbb', 'fitness motivation', 'gym girl', '筋肉女子', '筋トレ女子', 'fitfam',
+    'musclebeauty', 'thicc', 'thickfit', 'armpitfetish', 'tonedbody',
+    'fitchick', 'muscleworship', 'hardbody', 'girlswithmuscle', 'strongissexy',
+    'musclegirl', 'fitnessbabe', 'gymbabe', 'shredded', 'MuscleLove',
 ]
 
 
