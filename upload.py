@@ -39,6 +39,18 @@ BASE_TAGS = [
     'musclegirl', 'fitnessbabe', 'gymbabe', 'shredded', 'MuscleLove',
 ]
 
+CAPTION_TEMPLATES = [
+    '<p><b>{category}</b> — Raw power, no filter.</p>\n<p><a href="{patreon_link}">🔥 Exclusive content on Patreon → MuscleLove</a></p>\n<p>{hashtags}</p>',
+    '<p>💪 <b>{category}</b></p>\n<p>Stronger than yesterday. Follow the journey.</p>\n<p><a href="{patreon_link}">👉 Full videos on Patreon → MuscleLove</a></p>\n<p>{hashtags}</p>',
+    '<p><b>{category}</b> | Built, not bought.</p>\n<p><a href="{patreon_link}">🔥 More muscle content on Patreon → MuscleLove</a></p>\n<p>{hashtags}</p>',
+    '<p><b>{category}</b></p>\n<p>She didn\'t skip a single rep. 💥</p>\n<p><a href="{patreon_link}">Support & see more → MuscleLove on Patreon</a></p>\n<p>{hashtags}</p>',
+    '<p>✨ <b>{category}</b> ✨</p>\n<p>Muscle is art. Strength is beauty.</p>\n<p><a href="{patreon_link}">🔥 Unlock the full collection on Patreon → MuscleLove</a></p>\n<p>{hashtags}</p>',
+    '<p><b>{category}</b></p>\n<p>Iron therapy in session. 🏋️</p>\n<p><a href="{patreon_link}">Want more? Join us on Patreon → MuscleLove</a></p>\n<p>{hashtags}</p>',
+    '<p><b>{category}</b> — Peak physique, zero excuses.</p>\n<p><a href="{patreon_link}">💪 Patreon-exclusive drops → MuscleLove</a></p>\n<p>{hashtags}</p>',
+    '<p>🔥 <b>{category}</b></p>\n<p>This is what dedication looks like.</p>\n<p><a href="{patreon_link}">See the uncensored version on Patreon → MuscleLove</a></p>\n<p>{hashtags}</p>',
+    '<p><b>{category}</b></p>\n<p>Thick. Strong. Unstoppable. 💪</p>\n<p><a href="{patreon_link}">Daily posts on Patreon → MuscleLove</a></p>\n<p>{hashtags}</p>',
+    '<p><b>{category}</b> — Sweat, steel & discipline.</p>\n<p><a href="{patreon_link}">🔥 Become a patron → MuscleLove on Patreon</a></p>\n<p>{hashtags}</p>',
+]
 
 
 def download_videos():
@@ -90,7 +102,8 @@ def build_caption(video_path, tags):
             category = p
             break
     hashtags = ' '.join([f'#{t.replace(" ", "")}' for t in tags[:15]])
-    return f'<p><b>{category}</b></p>\n<p><a href="{PATREON_LINK}">🔥 More content on Patreon → MuscleLove</a></p>\n<p>{hashtags}</p>'
+    template = random.choice(CAPTION_TEMPLATES)
+    return template.format(category=category, hashtags=hashtags, patreon_link=PATREON_LINK)
 
 
 def main():
