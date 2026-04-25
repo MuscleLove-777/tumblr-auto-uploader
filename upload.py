@@ -10,7 +10,7 @@ import gdown
 
 GDRIVE_FOLDER_ID = os.environ.get("GDRIVE_FOLDER_ID", "")
 BLOG_NAME = "muscular-japanese-girls"
-PATREON_LINK = "https://www.patreon.com/cw/MuscleLove"
+PATREON_LINK = "https://www.patreon.com/cw/MuscleLove?utm_source=tumblr"
 VIDEO_EXTENSIONS = {'.mp4', '.mov', '.avi', '.wmv', '.mkv', '.webm'}
 MAX_FILE_SIZE = 500 * 1024 * 1024
 
@@ -38,6 +38,34 @@ BASE_TAGS = [
     'fitchick', 'muscleworship', 'hardbody', 'girlswithmuscle', 'strongissexy',
     'musclegirl', 'fitnessbabe', 'gymbabe', 'shredded', 'MuscleLove',
 ]
+
+# --- MuscleLove バックリンクプール（Tumblr adult OK: アダルト+フィットネス両方） ---
+ML_BACKLINK_POOL = [
+    ("https://musclelove-777.github.io/female-physique-queens/", "Female Physique Queens"),
+    ("https://musclelove-777.github.io/muscle-meal-girls/", "Muscle Meal Girls"),
+    ("https://musclelove-777.github.io/armwrestling-girls-navi/", "Armwrestling Girls Navi"),
+    ("https://musclelove-777.github.io/physique-girls-navi/", "Physique Girls Navi"),
+    ("https://musclelove-777.github.io/fighting-girls-navi/", "Fighting Girls Navi"),
+    ("https://musclelove-777.github.io/joshi-prowrestling-navi/", "Joshi ProWrestling Navi"),
+    ("https://musclelove-777.github.io/network/fitness/", "MuscleLove Fitness Network"),
+    ("https://musclelove-777.github.io/network/academy/", "MuscleLove Academy 77"),
+]
+
+
+def build_backlink_block():
+    """MuscleLoveバックリンクHTMLブロック（ランダム2件、冪等マーカー付き）"""
+    try:
+        k = min(2, len(ML_BACKLINK_POOL))
+        selected = random.sample(ML_BACKLINK_POOL, k=k)
+        items = " | ".join([f'<a href="{u}">{n}</a>' for u, n in selected])
+        return (
+            "\n"
+            "<!-- ML_BACKLINK -->\n"
+            f'<p><small>🔗 Related: {items}</small></p>\n'
+            "<!-- /ML_BACKLINK -->\n"
+        )
+    except Exception:
+        return ""
 
 CAPTION_TEMPLATES = [
     '<p><b>{category}</b> — Raw power, no filter.</p>\n<p><a href="{patreon_link}">🔥 Exclusive content on Patreon → MuscleLove</a></p>\n<p>{hashtags}</p>',
@@ -103,7 +131,8 @@ def build_caption(video_path, tags):
             break
     hashtags = ' '.join([f'#{t.replace(" ", "")}' for t in tags[:15]])
     template = random.choice(CAPTION_TEMPLATES)
-    return template.format(category=category, hashtags=hashtags, patreon_link=PATREON_LINK)
+    caption = template.format(category=category, hashtags=hashtags, patreon_link=PATREON_LINK)
+    return caption.rstrip() + build_backlink_block()
 
 
 def main():
