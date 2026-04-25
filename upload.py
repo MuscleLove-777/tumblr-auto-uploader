@@ -78,6 +78,13 @@ CAPTION_TEMPLATES = [
     '<p>🔥 <b>{category}</b></p>\n<p>This is what dedication looks like.</p>\n<p><a href="{patreon_link}">See the uncensored version on Patreon → MuscleLove</a></p>\n<p>{hashtags}</p>',
     '<p><b>{category}</b></p>\n<p>Thick. Strong. Unstoppable. 💪</p>\n<p><a href="{patreon_link}">Daily posts on Patreon → MuscleLove</a></p>\n<p>{hashtags}</p>',
     '<p><b>{category}</b> — Sweat, steel & discipline.</p>\n<p><a href="{patreon_link}">🔥 Become a patron → MuscleLove on Patreon</a></p>\n<p>{hashtags}</p>',
+    # --- Pool expansion 2026-04-25 (raw caption count was 10) ---
+    '<p>🌅 <b>{category}</b> — Morning pump, eternal grind.</p>\n<p>Reps before sunrise. Receipts after. 💪</p>\n<p><a href="{patreon_link}">Sunrise sets on Patreon → MuscleLove</a></p>\n<p>{hashtags}</p>',
+    '<p>🌙 <b>{category}</b> — Late-night iron therapy.</p>\n<p>The gym stays open. So does her dedication. 🔥</p>\n<p><a href="{patreon_link}">Night-shift drops on Patreon → MuscleLove</a></p>\n<p>{hashtags}</p>',
+    '<p><b>{category}</b> | Built different. Built better.</p>\n<p>Genetics started it. Discipline finished it. 💥</p>\n<p><a href="{patreon_link}">Full archive on Patreon → MuscleLove</a></p>\n<p>{hashtags}</p>',
+    '<p>💎 <b>{category}</b> — Diamond cut, velvet skin.</p>\n<p>Where shred meets curve. Pure muscle aesthetics. ✨</p>\n<p><a href="{patreon_link}">Premium edits on Patreon → MuscleLove</a></p>\n<p>{hashtags}</p>',
+    '<p><b>{category}</b> — Off-season thicc, on-season shredded.</p>\n<p>Both modes are a flex. 💪🔥</p>\n<p><a href="{patreon_link}">Bulk + cut series on Patreon → MuscleLove</a></p>\n<p>{hashtags}</p>',
+    '<p>🏆 <b>{category}</b> — Trophy physique, trophy mindset.</p>\n<p>She didn\'t come to play. She came to dominate. 💯</p>\n<p><a href="{patreon_link}">Champion-tier content on Patreon → MuscleLove</a></p>\n<p>{hashtags}</p>',
 ]
 
 
