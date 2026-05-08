@@ -68,23 +68,23 @@ def build_backlink_block():
         return ""
 
 CAPTION_TEMPLATES = [
-    '<p><b>{category}</b> — Raw power, no filter.</p>\n<p><a href="{patreon_link}">🔥 Exclusive content on Patreon → MuscleLove</a></p>\n<p>{hashtags}</p>',
-    '<p>💪 <b>{category}</b></p>\n<p>Stronger than yesterday. Follow the journey.</p>\n<p><a href="{patreon_link}">👉 Full videos on Patreon → MuscleLove</a></p>\n<p>{hashtags}</p>',
-    '<p><b>{category}</b> | Built, not bought.</p>\n<p><a href="{patreon_link}">🔥 More muscle content on Patreon → MuscleLove</a></p>\n<p>{hashtags}</p>',
-    '<p><b>{category}</b></p>\n<p>She didn\'t skip a single rep. 💥</p>\n<p><a href="{patreon_link}">Support & see more → MuscleLove on Patreon</a></p>\n<p>{hashtags}</p>',
-    '<p>✨ <b>{category}</b> ✨</p>\n<p>Muscle is art. Strength is beauty.</p>\n<p><a href="{patreon_link}">🔥 Unlock the full collection on Patreon → MuscleLove</a></p>\n<p>{hashtags}</p>',
-    '<p><b>{category}</b></p>\n<p>Iron therapy in session. 🏋️</p>\n<p><a href="{patreon_link}">Want more? Join us on Patreon → MuscleLove</a></p>\n<p>{hashtags}</p>',
-    '<p><b>{category}</b> — Peak physique, zero excuses.</p>\n<p><a href="{patreon_link}">💪 Patreon-exclusive drops → MuscleLove</a></p>\n<p>{hashtags}</p>',
-    '<p>🔥 <b>{category}</b></p>\n<p>This is what dedication looks like.</p>\n<p><a href="{patreon_link}">See the uncensored version on Patreon → MuscleLove</a></p>\n<p>{hashtags}</p>',
-    '<p><b>{category}</b></p>\n<p>Thick. Strong. Unstoppable. 💪</p>\n<p><a href="{patreon_link}">Daily posts on Patreon → MuscleLove</a></p>\n<p>{hashtags}</p>',
-    '<p><b>{category}</b> — Sweat, steel & discipline.</p>\n<p><a href="{patreon_link}">🔥 Become a patron → MuscleLove on Patreon</a></p>\n<p>{hashtags}</p>',
-    # --- Pool expansion 2026-04-25 (raw caption count was 10) ---
-    '<p>🌅 <b>{category}</b> — Morning pump, eternal grind.</p>\n<p>Reps before sunrise. Receipts after. 💪</p>\n<p><a href="{patreon_link}">Sunrise sets on Patreon → MuscleLove</a></p>\n<p>{hashtags}</p>',
-    '<p>🌙 <b>{category}</b> — Late-night iron therapy.</p>\n<p>The gym stays open. So does her dedication. 🔥</p>\n<p><a href="{patreon_link}">Night-shift drops on Patreon → MuscleLove</a></p>\n<p>{hashtags}</p>',
-    '<p><b>{category}</b> | Built different. Built better.</p>\n<p>Genetics started it. Discipline finished it. 💥</p>\n<p><a href="{patreon_link}">Full archive on Patreon → MuscleLove</a></p>\n<p>{hashtags}</p>',
-    '<p>💎 <b>{category}</b> — Diamond cut, velvet skin.</p>\n<p>Where shred meets curve. Pure muscle aesthetics. ✨</p>\n<p><a href="{patreon_link}">Premium edits on Patreon → MuscleLove</a></p>\n<p>{hashtags}</p>',
-    '<p><b>{category}</b> — Off-season thicc, on-season shredded.</p>\n<p>Both modes are a flex. 💪🔥</p>\n<p><a href="{patreon_link}">Bulk + cut series on Patreon → MuscleLove</a></p>\n<p>{hashtags}</p>',
-    '<p>🏆 <b>{category}</b> — Trophy physique, trophy mindset.</p>\n<p>She didn\'t come to play. She came to dominate. 💯</p>\n<p><a href="{patreon_link}">Champion-tier content on Patreon → MuscleLove</a></p>\n<p>{hashtags}</p>',
+    # Rinka (Gyaru/Bold) — tan, oily, shredded abs + big chest
+    '<p><b>{category}</b></p>\n<p>Rinka: "Huh? You wanna see my body THAT bad? 😏 Fine, you\'re special ♡" — abs so shredded it actually hurts.</p>\n<p><a href="{patreon_link}">🔥 Exclusive on Patreon → MuscleLove</a></p>\n<p>{hashtags}</p>',
+    '<p><b>{category}</b></p>\n<p>"Hard, right? Brace yourself ♡" — Rinka\'s tan, oily, jacked body is NOT a drill.</p>\n<p><a href="{patreon_link}">💪 More Rinka on Patreon → MuscleLove</a></p>\n<p>{hashtags}</p>',
+    '<p><b>{category}</b></p>\n<p>Rinka: "I got SO sweaty today — my pits are wild, right? lol" — sweat glowing on brown skin, peak aesthetic.</p>\n<p><a href="{patreon_link}">🔥 Full collection on Patreon → MuscleLove</a></p>\n<p>{hashtags}</p>',
+    # Kai (Tomboy) — tan athletic build, perky rear, casual vibe
+    '<p><b>{category}</b></p>\n<p>Kai: "Yo! Check out these arms — seriously INSANE right? 😄" — 500 push-ups worth of results right here.</p>\n<p><a href="{patreon_link}">👉 Full videos on Patreon → MuscleLove</a></p>\n<p>{hashtags}</p>',
+    '<p><b>{category}</b></p>\n<p>"Pits? lol sure whatever, I\'m probably sweaty tho — haha!" Kai is the most refreshingly chill muscle girl ever.</p>\n<p><a href="{patreon_link}">🔥 More Kai on Patreon → MuscleLove</a></p>\n<p>{hashtags}</p>',
+    '<p><b>{category}</b></p>\n<p>Tomboyish face, wide shoulders, perky butt, bronze skin glistening. Kai\'s build is unfair in the best way.</p>\n<p><a href="{patreon_link}">💪 Daily drops on Patreon → MuscleLove</a></p>\n<p>{hashtags}</p>',
+    # Mashiro (Airhead) — pale, thick, sweaty, big chest
+    '<p><b>{category}</b></p>\n<p>Mashiro: "Ehehe~ wanna see? ♡" — squishy, soft, but somehow JACKED. The sweetest contradiction in existence.</p>\n<p><a href="{patreon_link}">💪 Mashiro exclusive on Patreon → MuscleLove</a></p>\n<p>{hashtags}</p>',
+    '<p><b>{category}</b></p>\n<p>"Huh, does my body look like it\'s covered in oil? lol" — Mashiro\'s natural sweat glow is an entire vibe.</p>\n<p><a href="{patreon_link}">🔥 Daily updates on Patreon → MuscleLove</a></p>\n<p>{hashtags}</p>',
+    # Shion (Big Sister) — tall, glamorous, brown, busty, pheromone
+    '<p><b>{category}</b></p>\n<p>Shion: "My~ interested in my body? How cute ♡ Come closer, it\'s okay ♡" — tall, glamorous, dripping pheromones.</p>\n<p><a href="{patreon_link}">✨ Shion exclusive on Patreon → MuscleLove</a></p>\n<p>{hashtags}</p>',
+    '<p><b>{category}</b></p>\n<p>"Touch me and you\'ll never go back 😏" — Shion\'s tall oily body + massive chest is an experience, not just a look.</p>\n<p><a href="{patreon_link}">🔥 Unlock the full Shion collection → MuscleLove on Patreon</a></p>\n<p>{hashtags}</p>',
+    # Ayane (Tsundere) — compact, thicc, twintails, pale, blushes
+    '<p><b>{category}</b></p>\n<p>Ayane: "W-what are you staring at?! ...I didn\'t say STOP looking!" — tsundere twintails, compact muscle, full lethal payload.</p>\n<p><a href="{patreon_link}">💪 Ayane on Patreon → MuscleLove</a></p>\n<p>{hashtags}</p>',
+    '<p><b>{category}</b></p>\n<p>"J-just 3 seconds! ...Make sure you look PROPERLY." — Ayane gives you full permission whether she admits it or not.</p>\n<p><a href="{patreon_link}">🔥 Patreon-exclusive drops → MuscleLove</a></p>\n<p>{hashtags}</p>',
 ]
 
 
