@@ -10,7 +10,7 @@ import gdown
 
 GDRIVE_FOLDER_ID = os.environ.get("GDRIVE_FOLDER_ID", "")
 BLOG_NAME = "muscular-japanese-girls"
-PATREON_LINK = "https://www.patreon.com/cw/MuscleLove?utm_source=tumblr"
+PATREON_LINK = "https://www.patreon.com/c/MuscleLove?utm_source=tumblr"
 VIDEO_EXTENSIONS = {'.mp4', '.mov', '.avi', '.wmv', '.mkv', '.webm'}
 MAX_FILE_SIZE = 500 * 1024 * 1024
 
