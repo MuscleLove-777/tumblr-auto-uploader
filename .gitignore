@@ -1,2 +1,32 @@
+# Credentials & Secrets
+.env
+.env.*
+!.env.example
+credentials.json
+client_secret*.json
+token.json
+token.pickle
+
+# Cookies
+*_cookies.json
+*_cookies_base64.txt
+cookies.txt
+
+# Existing
 __pycache__/
 videos/
+
+
+# auto-defense (weekly sweep)
+.env
+.env.*
+!.env.example
+credentials*.json
+token*.json
+client_secret*.json
+service_account*.json
+*.pem
+*.key
+*.cookie
+*_cookies.json
+cookies.txt
