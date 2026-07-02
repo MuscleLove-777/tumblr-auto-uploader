@@ -8,6 +8,18 @@ import sys, os, random
 import pytumblr
 import gdown
 
+# 変種バンディット（重み付き抽選＋投稿ログ）。無くても一様ランダムで動く。
+try:
+    from variant_bandit import pick as bandit_pick, with_utm_content, log_post
+except Exception:
+    def bandit_pick(kind, options, rng=random):
+        o = rng.choice(options)
+        return o, ""
+    def with_utm_content(url, key):
+        return url
+    def log_post(platform, record):
+        pass
+
 GDRIVE_FOLDER_ID = os.environ.get("GDRIVE_FOLDER_ID", "")
 BLOG_NAME = "muscular-japanese-girls"
 PATREON_LINK = "https://www.patreon.com/c/MuscleLove?utm_source=tumblr"
@@ -52,12 +64,17 @@ ML_BACKLINK_POOL = [
 ]
 
 
-def build_backlink_block():
-    """MuscleLoveバックリンクHTMLブロック（ランダム2件、冪等マーカー付き）"""
+def build_backlink_block(variant_key=""):
+    """MuscleLoveバックリンクHTMLブロック（ランダム2件、冪等マーカー付き）
+    utm付与: GA4側で「tumblrのどの変種投稿が流入を生んだか」を測る生命線。"""
     try:
         k = min(2, len(ML_BACKLINK_POOL))
         selected = random.sample(ML_BACKLINK_POOL, k=k)
-        items = " | ".join([f'<a href="{u}">{n}</a>' for u, n in selected])
+        def _track(u):
+            sep = "&" if "?" in u else "?"
+            u = f"{u}{sep}utm_source=tumblr&utm_medium=autopost"
+            return with_utm_content(u, variant_key)
+        items = " | ".join([f'<a href="{_track(u)}">{n}</a>' for u, n in selected])
         return (
             "\n"
             "<!-- ML_BACKLINK -->\n"
@@ -130,6 +147,8 @@ def generate_tags(video_path):
 
 
 def build_caption(video_path, tags):
+    """キャプション生成。バンディット抽選＋変種キー(utm_content)付与。
+    return (caption, caption_variant_id)"""
     parts = video_path.replace('\\', '/').split('/')
     category = "Muscle"
     for p in parts:
@@ -137,9 +156,11 @@ def build_caption(video_path, tags):
             category = p
             break
     hashtags = ' '.join([f'#{t.replace(" ", "")}' for t in tags[:15]])
-    template = random.choice(CAPTION_TEMPLATES)
-    caption = template.format(category=category, hashtags=hashtags, patreon_link=PATREON_LINK)
-    return caption.rstrip() + build_backlink_block()
+    template, cap_vid = bandit_pick("tumblr.caption", CAPTION_TEMPLATES)
+    variant_key = f"cap{cap_vid}" if cap_vid else ""
+    patreon_link = with_utm_content(PATREON_LINK, variant_key)
+    caption = template.format(category=category, hashtags=hashtags, patreon_link=patreon_link)
+    return caption.rstrip() + build_backlink_block(variant_key), cap_vid
 
 
 def main():
@@ -172,6 +193,21 @@ def main():
 
     tags = generate_tags(video)
 
+    # content_pool（autonomyが毎日最適化）から mature レーンのタグ/NG語を取り込む
+    try:
+        from pool_loader import as_insights
+        ins = as_insights("mature_muscle", platform="tumblr")
+        seen = {t.lower() for t in tags}
+        for t in ins.get("recommended_tags", []):
+            if t.lower() not in seen:
+                tags.append(t)
+                seen.add(t.lower())
+        avoid = {a.lower() for a in ins.get("avoid_tags", [])}
+        if avoid:
+            tags = [t for t in tags if t.lower() not in avoid]
+    except Exception as e:
+        print(f"pool_loader skipped: {e}")
+
     # Google Trendsからトレンドタグを追加
     from trending import get_trending_tags
     trend_tags = get_trending_tags(max_tags=5)
@@ -182,13 +218,21 @@ def main():
                 tags.append(t)
                 seen.add(t.lower())
 
-    caption = build_caption(video, tags)
+    caption, cap_vid = build_caption(video, tags)
     print(f"Tags: {', '.join(tags[:10])}...")
+    print(f"Caption variant: {cap_vid or '(uniform)'}")
 
     try:
         result = client.create_video(BLOG_NAME, data=video, caption=caption, tags=tags)
         if isinstance(result, dict) and ('id' in result or (result.get('meta', {}).get('status') == 201)):
-            print(f"Success! {result.get('id', '')}")
+            post_id = result.get('id', '')
+            print(f"Success! {post_id}")
+            log_post("tumblr", {
+                "post_id": str(post_id),
+                "file": fname,
+                "variants": {"tumblr.caption": cap_vid},
+                "tags_count": len(tags),
+            })
             return 0
         else:
             print(f"Failed: {result}")

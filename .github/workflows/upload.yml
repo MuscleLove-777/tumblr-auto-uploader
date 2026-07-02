@@ -68,6 +68,24 @@ jobs:
           GDRIVE_FOLDER_ID: ${{ secrets.GDRIVE_FOLDER_ID }}
         run: python upload.py
 
+      - name: Collect engagement and commit variant logs
+        if: always()
+        continue-on-error: true
+        env:
+          TUMBLR_CONSUMER_KEY: ${{ secrets.TUMBLR_CONSUMER_KEY }}
+          TUMBLR_CONSUMER_SECRET: ${{ secrets.TUMBLR_CONSUMER_SECRET }}
+          TUMBLR_OAUTH_TOKEN: ${{ secrets.TUMBLR_OAUTH_TOKEN }}
+          TUMBLR_OAUTH_TOKEN_SECRET: ${{ secrets.TUMBLR_OAUTH_TOKEN_SECRET }}
+        run: |
+          python collect_engagement.py || true
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add posted_log.json 2>/dev/null || true
+          git add engagement.json 2>/dev/null || true
+          git diff --cached --quiet || git commit -m "auto: variant log + engagement [skip ci]"
+          git pull --rebase --autostash || true
+          git push || true
+
       - name: LINE notify on failure
         if: steps.attempt1.outcome == 'failure' && (steps.attempt2.outcome == 'failure' || steps.attempt2.outcome == 'skipped') && (steps.attempt3.outcome == 'failure' || steps.attempt3.outcome == 'skipped')
         env:
