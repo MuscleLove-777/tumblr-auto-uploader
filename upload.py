@@ -43,12 +43,22 @@ CONTENT_TAG_MAP = {
     'bench': ['ベンチプレス', 'benchpress', 'chest'],
 }
 
+# Tumblr実タグ厳選。先頭ほど検索露出が強い(Tumblrは先頭~20-25タグのみ検索対象)ので、
+# muscle/FBBコミュニティの"実リブログ動線"タグを核に前詰め。過剰な性的シグナル/弱い/重複タグは排除。
 BASE_TAGS = [
-    'muscle girl', 'muscular woman', 'female muscle', 'strong women',
-    'fbb', 'fitness motivation', 'gym girl', '筋肉女子', '筋トレ女子', 'fitfam',
-    'musclebeauty', 'thicc', 'thickfit', 'armpitfetish', 'tonedbody',
-    'fitchick', 'muscleworship', 'hardbody', 'girlswithmuscle', 'strongissexy',
-    'musclegirl', 'fitnessbabe', 'gymbabe', 'shredded', 'MuscleLove',
+    'female muscle', 'muscle girl', 'fbb', 'female bodybuilder', 'girls with muscle',
+    'muscular woman', 'strong women', 'muscle worship', 'fit girl', 'gym girl',
+    'bodybuilding', 'physique', 'biceps', 'abs', 'fitness',
+    'fitfam', 'women with muscle', '筋肉女子', '筋トレ女子', 'MuscleLove',
+]
+
+# ローテ用プール(毎回ここから数個サンプル=同一タグ連打のスパム判定回避+変化)。
+# Google Trends(pytrends)は"musclegirlbar"等の的外れ語を拾うため不使用。Tumblr実タグに限定。
+TUMBLR_ROTATING_TAGS = [
+    'muscular', 'strong is beautiful', 'fitness motivation', 'workout motivation',
+    'gains', 'aesthetic', 'gym life', 'strong girl', 'muscle beauty', 'ai art',
+    'ai generated', 'fitness girl', 'flexing', 'muscular women', 'fit women',
+    'body goals', 'strong and beautiful', 'shredded', 'toned', 'gymrat',
 ]
 
 # --- MuscleLove バックリンクプール（Tumblr adult OK: アダルト+フィットネス両方） ---
@@ -208,15 +218,16 @@ def main():
     except Exception as e:
         print(f"pool_loader skipped: {e}")
 
-    # Google Trendsからトレンドタグを追加
-    from trending import get_trending_tags
-    trend_tags = get_trending_tags(max_tags=5)
-    if trend_tags:
-        seen = {t.lower() for t in tags}
-        for t in trend_tags:
-            if t.lower() not in seen:
-                tags.append(t)
-                seen.add(t.lower())
+    # ローテ用Tumblr実タグを数個追加（Google Trendsの的外れ語は廃止）
+    import random as _r
+    seen = {t.lower() for t in tags}
+    for t in _r.sample(TUMBLR_ROTATING_TAGS, k=min(6, len(TUMBLR_ROTATING_TAGS))):
+        if t.lower() not in seen:
+            tags.append(t)
+            seen.add(t.lower())
+
+    # Tumblr検索は先頭~25タグのみ有効。前詰めを保ったまま上限で無駄タグを排除。
+    tags = tags[:25]
 
     caption, cap_vid = build_caption(video, tags)
     print(f"Tags: {', '.join(tags[:10])}...")
