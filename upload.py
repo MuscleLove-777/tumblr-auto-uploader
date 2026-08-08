@@ -3,10 +3,20 @@
 Tumblr動画ランダムアップロード（GitHub Actions用）
 Google Driveからダウンロード → ランダム1本アップロード（重複許可）
 """
+import argparse
+import json
 import sys, os, random
+from pathlib import Path
 
-import pytumblr
-import gdown
+try:
+    import pytumblr
+except ImportError:
+    pytumblr = None
+
+try:
+    import gdown
+except ImportError:
+    gdown = None
 
 # 変種バンディット（重み付き抽選＋投稿ログ）。無くても一様ランダムで動く。
 try:
@@ -25,6 +35,15 @@ BLOG_NAME = "muscular-japanese-girls"
 PATREON_LINK = "https://www.patreon.com/c/MuscleLove?utm_source=tumblr"
 VIDEO_EXTENSIONS = {'.mp4', '.mov', '.avi', '.wmv', '.mkv', '.webm'}
 MAX_FILE_SIZE = 500 * 1024 * 1024
+DRY_RUN_VIDEO_NAME = os.environ.get("TUMBLR_DRY_RUN_VIDEO_NAME", "training_flex_preview.mp4")
+DRY_RUN_ARTIFACT = "dry_run_tumblr_preview.json"
+PREVIEW_BLOCK_TERMS = [
+    "GOOGLE_API_KEY",
+    "Google API",
+    "Google Cloud",
+    "cookie",
+    "secret",
+]
 
 CONTENT_TAG_MAP = {
     'training': ['筋トレ', 'workout', 'training', 'gym', 'fitness'],
@@ -95,27 +114,22 @@ def build_backlink_block(variant_key=""):
         return ""
 
 CAPTION_TEMPLATES = [
-    # Rinka (Gyaru/Bold) — tan, oily, shredded abs + big chest
-    '<p><b>{category}</b></p>\n<p>Rinka: "Huh? You wanna see my body THAT bad? 😏 Fine, you\'re special ♡" — abs so shredded it actually hurts.</p>\n<p><a href="{patreon_link}">🔥 Exclusive on Patreon → MuscleLove</a></p>\n<p>{hashtags}</p>',
-    '<p><b>{category}</b></p>\n<p>"Hard, right? Brace yourself ♡" — Rinka\'s tan, oily, jacked body is NOT a drill.</p>\n<p><a href="{patreon_link}">💪 More Rinka on Patreon → MuscleLove</a></p>\n<p>{hashtags}</p>',
-    '<p><b>{category}</b></p>\n<p>Rinka: "I got SO sweaty today — my pits are wild, right? lol" — sweat glowing on brown skin, peak aesthetic.</p>\n<p><a href="{patreon_link}">🔥 Full collection on Patreon → MuscleLove</a></p>\n<p>{hashtags}</p>',
-    # Kai (Tomboy) — tan athletic build, perky rear, casual vibe
-    '<p><b>{category}</b></p>\n<p>Kai: "Yo! Check out these arms — seriously INSANE right? 😄" — 500 push-ups worth of results right here.</p>\n<p><a href="{patreon_link}">👉 Full videos on Patreon → MuscleLove</a></p>\n<p>{hashtags}</p>',
-    '<p><b>{category}</b></p>\n<p>"Pits? lol sure whatever, I\'m probably sweaty tho — haha!" Kai is the most refreshingly chill muscle girl ever.</p>\n<p><a href="{patreon_link}">🔥 More Kai on Patreon → MuscleLove</a></p>\n<p>{hashtags}</p>',
-    '<p><b>{category}</b></p>\n<p>Tomboyish face, wide shoulders, perky butt, bronze skin glistening. Kai\'s build is unfair in the best way.</p>\n<p><a href="{patreon_link}">💪 Daily drops on Patreon → MuscleLove</a></p>\n<p>{hashtags}</p>',
-    # Mashiro (Airhead) — pale, thick, sweaty, big chest
-    '<p><b>{category}</b></p>\n<p>Mashiro: "Ehehe~ wanna see? ♡" — squishy, soft, but somehow JACKED. The sweetest contradiction in existence.</p>\n<p><a href="{patreon_link}">💪 Mashiro exclusive on Patreon → MuscleLove</a></p>\n<p>{hashtags}</p>',
-    '<p><b>{category}</b></p>\n<p>"Huh, does my body look like it\'s covered in oil? lol" — Mashiro\'s natural sweat glow is an entire vibe.</p>\n<p><a href="{patreon_link}">🔥 Daily updates on Patreon → MuscleLove</a></p>\n<p>{hashtags}</p>',
-    # Shion (Big Sister) — tall, glamorous, brown, busty, pheromone
-    '<p><b>{category}</b></p>\n<p>Shion: "My~ interested in my body? How cute ♡ Come closer, it\'s okay ♡" — tall, glamorous, dripping pheromones.</p>\n<p><a href="{patreon_link}">✨ Shion exclusive on Patreon → MuscleLove</a></p>\n<p>{hashtags}</p>',
-    '<p><b>{category}</b></p>\n<p>"Touch me and you\'ll never go back 😏" — Shion\'s tall oily body + massive chest is an experience, not just a look.</p>\n<p><a href="{patreon_link}">🔥 Unlock the full Shion collection → MuscleLove on Patreon</a></p>\n<p>{hashtags}</p>',
-    # Ayane (Tsundere) — compact, thicc, twintails, pale, blushes
-    '<p><b>{category}</b></p>\n<p>Ayane: "W-what are you staring at?! ...I didn\'t say STOP looking!" — tsundere twintails, compact muscle, full lethal payload.</p>\n<p><a href="{patreon_link}">💪 Ayane on Patreon → MuscleLove</a></p>\n<p>{hashtags}</p>',
-    '<p><b>{category}</b></p>\n<p>"J-just 3 seconds! ...Make sure you look PROPERLY." — Ayane gives you full permission whether she admits it or not.</p>\n<p><a href="{patreon_link}">🔥 Patreon-exclusive drops → MuscleLove</a></p>\n<p>{hashtags}</p>',
+    # Public captions stay abstract: no fixed character names or source-specific incidents.
+    '<p><b>{category}</b></p>\n<p>この一枚、肩と背中の圧がいい。強い身体はそれだけで見せ場になる。</p>\n<p><a href="{patreon_link}">More on Patreon -> MuscleLove</a></p>\n<p>{hashtags}</p>',
+    '<p><b>{category}</b></p>\n<p>今日の筋肉美女。線が出てる、姿勢が強い、保存して見返したくなる仕上がり。</p>\n<p><a href="{patreon_link}">Daily drops on Patreon -> MuscleLove</a></p>\n<p>{hashtags}</p>',
+    '<p><b>{category}</b></p>\n<p>Strong is beautiful. ただ細いだけじゃない、鍛えた輪郭が刺さる。</p>\n<p><a href="{patreon_link}">Full collection on Patreon -> MuscleLove</a></p>\n<p>{hashtags}</p>',
+    '<p><b>{category}</b></p>\n<p>腕、腹筋、背中。見どころをちゃんと残して、Tumblr向けに濃いめで出す。</p>\n<p><a href="{patreon_link}">More muscle art on Patreon -> MuscleLove</a></p>\n<p>{hashtags}</p>',
+    '<p><b>{category}</b></p>\n<p>バキバキ。でも美しい。こういう強さを毎日積み上げる。</p>\n<p><a href="{patreon_link}">Patreon-exclusive drops -> MuscleLove</a></p>\n<p>{hashtags}</p>',
+    '<p><b>{category}</b></p>\n<p>筋肉美女はやっぱり最高。ポーズ、厚み、視線の流れまで強い。</p>\n<p><a href="{patreon_link}">Unlock more on Patreon -> MuscleLove</a></p>\n<p>{hashtags}</p>',
+    '<p><b>{category}</b></p>\n<p>今日はこの圧。リブログで刺さる人に届けばそれでいい。</p>\n<p><a href="{patreon_link}">More from MuscleLove on Patreon</a></p>\n<p>{hashtags}</p>',
+    '<p><b>{category}</b></p>\n<p>鍛えた身体の説得力。シンプルに強くて、シンプルにきれい。</p>\n<p><a href="{patreon_link}">Full gallery on Patreon -> MuscleLove</a></p>\n<p>{hashtags}</p>',
 ]
 
 
 def download_videos():
+    if gdown is None:
+        print("Error: gdown is required for live Google Drive material download. Use --dry-run for local preview.")
+        return []
     dl_dir = "videos"
     os.makedirs(dl_dir, exist_ok=True)
     url = f"https://drive.google.com/drive/folders/{GDRIVE_FOLDER_ID}"
@@ -156,9 +170,126 @@ def generate_tags(video_path):
     return unique_tags
 
 
-def build_caption(video_path, tags):
+def load_pool_insights():
+    """Read mature_muscle content_pool data without making it mandatory."""
+    try:
+        from pool_loader import as_insights
+        return as_insights("mature_muscle", platform="tumblr")
+    except Exception as e:
+        print(f"pool_loader skipped: {e}")
+        return {}
+
+
+def merge_pool_tags(tags, insights):
+    seen = {t.lower() for t in tags}
+    for t in insights.get("recommended_tags", []):
+        if t.lower() not in seen:
+            tags.append(t)
+            seen.add(t.lower())
+    avoid = {a.lower() for a in insights.get("avoid_tags", [])}
+    if avoid:
+        tags = [t for t in tags if t.lower() not in avoid]
+    return tags
+
+
+def add_rotating_tags(tags):
+    seen = {t.lower() for t in tags}
+    for t in random.sample(TUMBLR_ROTATING_TAGS, k=min(6, len(TUMBLR_ROTATING_TAGS))):
+        if t.lower() not in seen:
+            tags.append(t)
+            seen.add(t.lower())
+    return tags
+
+
+def scan_preview(caption, tags, insights):
+    text = f"{caption}\n{' '.join(tags)}"
+    blocked = list(PREVIEW_BLOCK_TERMS) + list(insights.get("avoid_tags", []))
+    hits = []
+    lower_text = text.lower()
+    for term in blocked:
+        if term and term.lower() in lower_text:
+            hits.append(term)
+    return sorted(set(hits), key=str.lower)
+
+
+def prepare_post(video_path):
+    tags = generate_tags(video_path)
+    insights = load_pool_insights()
+    tags = merge_pool_tags(tags, insights)
+    tags = add_rotating_tags(tags)
+    tags = tags[:25]
+    caption, cap_vid = build_caption(video_path, tags, insights)
+    return tags, caption, cap_vid, insights
+
+
+def choose_dry_run_video(sample_name=""):
+    local = []
+    if os.path.isdir("videos"):
+        for root, dirs, filenames in os.walk("videos"):
+            for fname in filenames:
+                if os.path.splitext(fname)[1].lower() in VIDEO_EXTENSIONS:
+                    local.append(os.path.join(root, fname))
+    if local:
+        return random.choice(local), "local videos folder"
+    return os.path.join("dry_run", sample_name or DRY_RUN_VIDEO_NAME), "synthetic sample"
+
+
+def run_dry_run(sample_name=""):
+    video, source = choose_dry_run_video(sample_name)
+    tags, caption, cap_vid, insights = prepare_post(video)
+    blocked_hits = scan_preview(caption, tags, insights)
+    if blocked_hits:
+        print(f"DRY RUN FAILED: blocked terms in preview: {', '.join(blocked_hits)}")
+        return 1
+
+    platform_focus = insights.get("platform_focus", {})
+    artifact = {
+        "mode": "dry-run",
+        "media_source": source,
+        "selected": os.path.basename(video),
+        "lane": "mature_muscle",
+        "platform": "tumblr",
+        "pool_version": insights.get("updated_at_jst", ""),
+        "platform_focus": platform_focus,
+        "conversion_focus": insights.get("conversion_focus", {}),
+        "caption_variant": cap_vid or "",
+        "tags": tags,
+        "caption": caption,
+    }
+    Path(DRY_RUN_ARTIFACT).write_text(
+        json.dumps(artifact, ensure_ascii=False, indent=2),
+        encoding="utf-8",
+    )
+
+    print("Tumblr Auto Uploader DRY RUN")
+    print(f"Pool: {insights.get('updated_at_jst', 'hardcoded')}")
+    print(f"Media source: {source}")
+    print(f"Selected: {os.path.basename(video)}")
+    if platform_focus:
+        print(
+            "Platform focus: "
+            f"action={platform_focus.get('action', '')} "
+            f"cadence={platform_focus.get('cadence_hint', '')} "
+            f"sessions_28d={platform_focus.get('sessions_28d', 0)}"
+        )
+    print(f"Tags: {', '.join(tags[:10])}...")
+    print(f"Caption variant: {cap_vid or '(uniform)'}")
+    print(f"Preview artifact: {DRY_RUN_ARTIFACT}")
+    print("DRY RUN OK: no auth, download, upload, posted_log, or notification was attempted.")
+    return 0
+
+
+def env_flag(name, default=False):
+    raw = os.environ.get(name)
+    if raw is None:
+        return default
+    return raw.lower() in {"1", "true", "yes", "on"}
+
+
+def build_caption(video_path, tags, insights=None):
     """キャプション生成。バンディット抽選＋変種キー(utm_content)付与。
     return (caption, caption_variant_id)"""
+    insights = insights or {}
     parts = video_path.replace('\\', '/').split('/')
     category = "Muscle"
     for p in parts:
@@ -166,14 +297,53 @@ def build_caption(video_path, tags):
             category = p
             break
     hashtags = ' '.join([f'#{t.replace(" ", "")}' for t in tags[:15]])
-    template, cap_vid = bandit_pick("tumblr.caption", CAPTION_TEMPLATES)
+    templates = insights.get("recommended_templates") or CAPTION_TEMPLATES
+    template, cap_vid = bandit_pick("tumblr.caption", templates)
     variant_key = f"cap{cap_vid}" if cap_vid else ""
     patreon_link = with_utm_content(PATREON_LINK, variant_key)
-    caption = template.format(category=category, hashtags=hashtags, patreon_link=patreon_link)
+    try:
+        caption = template.format(category=category, hashtags=hashtags, patreon_link=patreon_link)
+    except KeyError:
+        caption = template.format(hashtags=hashtags)
+    ctas = insights.get("recommended_ctas", [])
+    if ctas:
+        cta = random.choice(ctas)
+        if cta and cta not in caption:
+            caption = caption.rstrip() + f"\n<p>{cta}</p>"
     return caption.rstrip() + build_backlink_block(variant_key), cap_vid
 
 
-def main():
+def _cadence_slots():
+    """自動運営機構(channel_weights)が決めた今回の投稿本数。
+    勝ち媒体は平均1.25本/実行へ増枠、流入ゼロ継続は半減、停止中は0本。
+    プールが無ければ1本＝従来挙動（絶対に死なない）。"""
+    try:
+        import variant_bandit
+        return variant_bandit.posts_this_run("tumblr")
+    except Exception:
+        return 1
+
+
+def main(argv=None):
+    _slots = _cadence_slots()
+    if _slots < 1:
+        print("[cadence] 自動頻度調整により今回はスキップします")
+        return 0
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--dry-run", action="store_true", help="Build a Tumblr post preview without auth, download, or upload.")
+    parser.add_argument("--sample-name", default="", help="Synthetic video name for dry-run when no local videos exist.")
+    args = parser.parse_args(argv)
+
+    if args.dry_run or env_flag("TUMBLR_DRY_RUN") or env_flag("DRY_RUN"):
+        return run_dry_run(args.sample_name.strip())
+
+    if pytumblr is None:
+        print("Error: pytumblr is required for live Tumblr upload. Use --dry-run for local preview.")
+        return 1
+    if gdown is None:
+        print("Error: gdown is required for live Google Drive material download. Use --dry-run for local preview.")
+        return 1
+
     consumer_key = os.environ.get("TUMBLR_CONSUMER_KEY", "")
     consumer_secret = os.environ.get("TUMBLR_CONSUMER_SECRET", "")
     oauth_token = os.environ.get("TUMBLR_OAUTH_TOKEN", "")
@@ -201,35 +371,11 @@ def main():
     fname = os.path.basename(video)
     print(f"Selected: {fname}")
 
-    tags = generate_tags(video)
-
-    # content_pool（autonomyが毎日最適化）から mature レーンのタグ/NG語を取り込む
-    try:
-        from pool_loader import as_insights
-        ins = as_insights("mature_muscle", platform="tumblr")
-        seen = {t.lower() for t in tags}
-        for t in ins.get("recommended_tags", []):
-            if t.lower() not in seen:
-                tags.append(t)
-                seen.add(t.lower())
-        avoid = {a.lower() for a in ins.get("avoid_tags", [])}
-        if avoid:
-            tags = [t for t in tags if t.lower() not in avoid]
-    except Exception as e:
-        print(f"pool_loader skipped: {e}")
-
-    # ローテ用Tumblr実タグを数個追加（Google Trendsの的外れ語は廃止）
-    import random as _r
-    seen = {t.lower() for t in tags}
-    for t in _r.sample(TUMBLR_ROTATING_TAGS, k=min(6, len(TUMBLR_ROTATING_TAGS))):
-        if t.lower() not in seen:
-            tags.append(t)
-            seen.add(t.lower())
-
-    # Tumblr検索は先頭~25タグのみ有効。前詰めを保ったまま上限で無駄タグを排除。
-    tags = tags[:25]
-
-    caption, cap_vid = build_caption(video, tags)
+    tags, caption, cap_vid, insights = prepare_post(video)
+    blocked_hits = scan_preview(caption, tags, insights)
+    if blocked_hits:
+        print(f"Blocked preview terms detected: {', '.join(blocked_hits)}")
+        return 1
     print(f"Tags: {', '.join(tags[:10])}...")
     print(f"Caption variant: {cap_vid or '(uniform)'}")
 

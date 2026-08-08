@@ -15,6 +15,8 @@ cookies.txt
 # Existing
 __pycache__/
 videos/
+dry_run_*.json
+dry_run_*.html
 
 
 # auto-defense (weekly sweep)
