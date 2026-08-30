@@ -7,6 +7,7 @@ import argparse
 import json
 import sys, os, random
 from pathlib import Path
+from media_pool import eligible_videos, local_videos, audit as media_audit
 
 try:
     import pytumblr
@@ -148,7 +149,7 @@ def download_videos():
                 size = os.path.getsize(fpath)
                 if size <= MAX_FILE_SIZE:
                     files.append(fpath)
-    return files
+    return eligible_videos(files)
 
 
 def generate_tags(video_path):
@@ -223,6 +224,11 @@ def prepare_post(video_path):
 
 
 def choose_dry_run_video(sample_name=""):
+    approved_local = local_videos()
+    if approved_local is not None:
+        if not approved_local:
+            raise ValueError("No approved local media; refusing synthetic fallback")
+        return random.choice(approved_local), "approved local recursive pool"
     local = []
     if os.path.isdir("videos"):
         for root, dirs, filenames in os.walk("videos"):
@@ -230,7 +236,10 @@ def choose_dry_run_video(sample_name=""):
                 if os.path.splitext(fname)[1].lower() in VIDEO_EXTENSIONS:
                     local.append(os.path.join(root, fname))
     if local:
-        return random.choice(local), "local videos folder"
+        local = eligible_videos(local)
+        if not local:
+            raise ValueError("No approved cached media")
+        return random.choice(local), "approved cached videos folder"
     return os.path.join("dry_run", sample_name or DRY_RUN_VIDEO_NAME), "synthetic sample"
 
 
@@ -290,11 +299,14 @@ def build_caption(video_path, tags, insights=None):
     """キャプション生成。バンディット抽選＋変種キー(utm_content)付与。
     return (caption, caption_variant_id)"""
     insights = insights or {}
-    parts = video_path.replace('\\', '/').split('/')
+    parts = video_path.replace('\\', '/').lower().split('/')
     category = "Muscle"
+    # Never turn an absolute local path/user name into public copy.
+    public_categories = {"training": "Training", "pullups": "Pullups",
+                         "posing": "Posing", "bodybuilding": "Bodybuilding"}
     for p in parts:
-        if p not in ['videos', ''] and '.' not in p:
-            category = p
+        if p in public_categories:
+            category = public_categories[p]
             break
     hashtags = ' '.join([f'#{t.replace(" ", "")}' for t in tags[:15]])
     templates = insights.get("recommended_templates") or CAPTION_TEMPLATES
@@ -325,22 +337,29 @@ def _cadence_slots():
 
 
 def main(argv=None):
-    _slots = _cadence_slots()
-    if _slots < 1:
-        print("[cadence] 自動頻度調整により今回はスキップします")
-        return 0
     parser = argparse.ArgumentParser()
+    parser.add_argument("--media-audit", action="store_true", help="Read approval counts without credentials, network, or writes.")
     parser.add_argument("--dry-run", action="store_true", help="Build a Tumblr post preview without auth, download, or upload.")
     parser.add_argument("--sample-name", default="", help="Synthetic video name for dry-run when no local videos exist.")
     args = parser.parse_args(argv)
 
+    if args.media_audit:
+        print(json.dumps(media_audit(), ensure_ascii=False, indent=2))
+        return 0
+
     if args.dry_run or env_flag("TUMBLR_DRY_RUN") or env_flag("DRY_RUN"):
         return run_dry_run(args.sample_name.strip())
 
+    _slots = _cadence_slots()
+    if _slots < 1:
+        print("[cadence] 自動頻度調整により今回はスキップします")
+        return 0
+
+    approved_local = local_videos()
     if pytumblr is None:
         print("Error: pytumblr is required for live Tumblr upload. Use --dry-run for local preview.")
         return 1
-    if gdown is None:
+    if approved_local is None and gdown is None:
         print("Error: gdown is required for live Google Drive material download. Use --dry-run for local preview.")
         return 1
 
@@ -361,7 +380,7 @@ def main(argv=None):
         print(f"Auth error: {info}")
         return 1
 
-    videos = download_videos()
+    videos = approved_local if approved_local is not None else download_videos()
     if not videos:
         print("No videos found!")
         return 0

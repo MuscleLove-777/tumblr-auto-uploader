@@ -1,0 +1,989 @@
+{
+  "schema_version": 1,
+  "source": "000_Tumblr_movie",
+  "recursive": true,
+  "user_approved_count": 98,
+  "automatic_new_file_approval": false,
+  "entries": [
+    {
+      "relative_path": "1747181410660video.mp4",
+      "sha256": "12e64679c3a58b800c6d8eacd96fc46b8e69ca94cd8623d25dc875f0f88e0be7",
+      "size": 2809032,
+      "category": "Physique",
+      "user_approved": true,
+      "autopost_ready": true,
+      "requires_mature_review": false,
+      "hold_reason": null
+    },
+    {
+      "relative_path": "1747220390720video.mp4",
+      "sha256": "153fe3685b1edc573420eb2d8849e371f8d7d415e51ad6393ec0f34173d6bc59",
+      "size": 3290425,
+      "category": "FitnessDance",
+      "user_approved": true,
+      "autopost_ready": true,
+      "requires_mature_review": false,
+      "hold_reason": null
+    },
+    {
+      "relative_path": "1747221343198video.mp4",
+      "sha256": "1b208a1adb17363ca08a96a18d323a5056ae1bc700a25a6376ee7b71531b4053",
+      "size": 3262348,
+      "category": "FitnessDance",
+      "user_approved": true,
+      "autopost_ready": true,
+      "requires_mature_review": false,
+      "hold_reason": null
+    },
+    {
+      "relative_path": "1747222534415video.mp4",
+      "sha256": "77e18506e64241c4d96dd48400ce8e675ee8e75002c89462073256cf7836c5ef",
+      "size": 2767554,
+      "category": "Physique",
+      "user_approved": true,
+      "autopost_ready": true,
+      "requires_mature_review": false,
+      "hold_reason": null
+    },
+    {
+      "relative_path": "20250526_2103_video.mp4",
+      "sha256": "072c37c63c5c6c4d8ec0ccb250e0af0d92fd2b3c695d54124dc7045285244502",
+      "size": 1595948,
+      "category": "Training",
+      "user_approved": true,
+      "autopost_ready": false,
+      "requires_mature_review": true,
+      "hold_reason": "prior_rejection_retained_suggestive_framing"
+    },
+    {
+      "relative_path": "20250526_2134_video.mp4",
+      "sha256": "0f8830b75a2ad262d294efa4357d7ddb6fa3be1440086f1060c2200ee713a4a5",
+      "size": 1924601,
+      "category": "Training",
+      "user_approved": true,
+      "autopost_ready": false,
+      "requires_mature_review": true,
+      "hold_reason": "prior_rejection_retained_suggestive_framing"
+    },
+    {
+      "relative_path": "_uploaded/grok-video-06316899-547a-44d2-9628-6c3d38e57099-1.mp4",
+      "sha256": "0b13cccdcb97d30b31d110bb295e66e6b10f932b503b9e52efa0848e7f3b985c",
+      "size": 2410468,
+      "category": "Training",
+      "user_approved": true,
+      "autopost_ready": false,
+      "requires_mature_review": true,
+      "hold_reason": "uploaded_duplicate_and_non_sfw"
+    },
+    {
+      "relative_path": "_uploaded/grok-video-5d403fe1-5895-4df8-ba59-2005a42cdc52-0.mp4",
+      "sha256": "8395e4b3735a7f1c43a5307b86114d20bb5b459c6202bff575c9cd6dad1f93c8",
+      "size": 1698033,
+      "category": "Training",
+      "user_approved": true,
+      "autopost_ready": false,
+      "requires_mature_review": true,
+      "hold_reason": "uploaded_duplicate_and_non_sfw"
+    },
+    {
+      "relative_path": "grok-video-0a5e56ec-f386-48f8-abb1-66727225ca26.mp4",
+      "sha256": "5e98e53abe732f6a4cad6e25c3737ed34b7f0b623136f671d4e2606cc7083e2d",
+      "size": 10613512,
+      "category": "Running",
+      "user_approved": true,
+      "autopost_ready": true,
+      "requires_mature_review": false,
+      "hold_reason": null
+    },
+    {
+      "relative_path": "grok-video-0ca9cb67-f2dd-493d-bf7e-7dd3a5cab9c7.mp4",
+      "sha256": "2c99aa381cbc5e3792fd319a94f96a9160936d66a0940ed3d4225065e4ad26fe",
+      "size": 10008306,
+      "category": "Training",
+      "user_approved": true,
+      "autopost_ready": true,
+      "requires_mature_review": false,
+      "hold_reason": null
+    },
+    {
+      "relative_path": "grok-video-0e2e6194-8918-4bbc-ac37-6d42bc1825a7.mp4",
+      "sha256": "d82696cb604ca209bf8c2f84378c6d25867b8ccd67b83c02a327c0a6419bed5f",
+      "size": 5830728,
+      "category": "Bodybuilding",
+      "user_approved": true,
+      "autopost_ready": true,
+      "requires_mature_review": false,
+      "hold_reason": null
+    },
+    {
+      "relative_path": "grok-video-17c8ec14-4222-45aa-9aeb-40bae85070b1.mp4",
+      "sha256": "8726416988a72986ad98710d90426b28217625df77fcb420abff77ef01d00991",
+      "size": 14497636,
+      "category": "Pullups",
+      "user_approved": true,
+      "autopost_ready": true,
+      "requires_mature_review": false,
+      "hold_reason": null
+    },
+    {
+      "relative_path": "grok-video-22fa71df-0f8d-4da9-8b3e-2390da372fa4.mp4",
+      "sha256": "f0d3b0980fae9edf186b80fae10cbbf89d7abd9c06b30a60f9060c6eda5a7a47",
+      "size": 6506807,
+      "category": "Training",
+      "user_approved": true,
+      "autopost_ready": true,
+      "requires_mature_review": false,
+      "hold_reason": null
+    },
+    {
+      "relative_path": "grok-video-2339f6a7-f202-4a30-8c6f-73b39729d33b.mp4",
+      "sha256": "99437cdc1bbe7f18e0417250e109b897a87dccb8542efc854d03ed64cdd385c4",
+      "size": 4222652,
+      "category": "Pullups",
+      "user_approved": true,
+      "autopost_ready": true,
+      "requires_mature_review": false,
+      "hold_reason": null
+    },
+    {
+      "relative_path": "grok-video-26c252ab-a66d-4e36-8478-f05bd5857dd6.mp4",
+      "sha256": "b763ea97166c664d93821e6e5929338511b882ad4d2453ef482e10997f01fc8e",
+      "size": 10664583,
+      "category": "Combat",
+      "user_approved": true,
+      "autopost_ready": true,
+      "requires_mature_review": false,
+      "hold_reason": null
+    },
+    {
+      "relative_path": "grok-video-2c61b30a-fb1b-4ed9-9ae4-48418eb4fb78.mp4",
+      "sha256": "f152d1aafb26debb55358b80e9553880538d63aee8b4a175adcc15b8ec1b7429",
+      "size": 7519767,
+      "category": "Training",
+      "user_approved": true,
+      "autopost_ready": true,
+      "requires_mature_review": false,
+      "hold_reason": null
+    },
+    {
+      "relative_path": "grok-video-365c7970-aa1b-4a62-ba35-9a46ae7c4dca.mp4",
+      "sha256": "ce0fb525b51744668bd0ff152f49c7edb130c6ffb326e5dafdca8eaea46c7300",
+      "size": 6792771,
+      "category": "Training",
+      "user_approved": true,
+      "autopost_ready": true,
+      "requires_mature_review": false,
+      "hold_reason": null
+    },
+    {
+      "relative_path": "grok-video-393df1a9-a0f9-4042-bb69-f38cb27e450e.mp4",
+      "sha256": "4876d8607675bf2113d8afa4fb86e2296753ffbcdc1cebcdd487f72e0b47aace",
+      "size": 6619374,
+      "category": "Training",
+      "user_approved": true,
+      "autopost_ready": true,
+      "requires_mature_review": false,
+      "hold_reason": null
+    },
+    {
+      "relative_path": "grok-video-3f687d64-8844-4125-b4ed-84887c89c20f.mp4",
+      "sha256": "ed499da4f507cdcb1db9cc39d598a20ca4a9ea357cd8aac9544ea47c806b69c6",
+      "size": 4754803,
+      "category": "Training",
+      "user_approved": true,
+      "autopost_ready": true,
+      "requires_mature_review": false,
+      "hold_reason": null
+    },
+    {
+      "relative_path": "grok-video-45a0540a-6d1d-4ea8-8d93-7be6061e7956.mp4",
+      "sha256": "a8442a87e2ff9fbe1373b7b79f4fe8b2bbd69e815570d1e2f755297cd757fff5",
+      "size": 16939711,
+      "category": "Training",
+      "user_approved": true,
+      "autopost_ready": true,
+      "requires_mature_review": false,
+      "hold_reason": null
+    },
+    {
+      "relative_path": "grok-video-45e8f7dd-0498-45f3-9fac-57a5815d5b26-3.mp4",
+      "sha256": "2a3b58125753b95a475f4a94e95ecae8b296629344ab460e97ba33966e816a21",
+      "size": 1691987,
+      "category": "Bodybuilding",
+      "user_approved": true,
+      "autopost_ready": true,
+      "requires_mature_review": false,
+      "hold_reason": null
+    },
+    {
+      "relative_path": "grok-video-4c410614-1564-4275-993e-113b37fe7c99.mp4",
+      "sha256": "fce1b5069a6fc40bdab27cfb85a044e831e30832e899a6d1df9cd538a2c9a60a",
+      "size": 6325283,
+      "category": "Training",
+      "user_approved": true,
+      "autopost_ready": true,
+      "requires_mature_review": false,
+      "hold_reason": null
+    },
+    {
+      "relative_path": "grok-video-4e18bed5-c71d-4667-b1b8-af7e574cff8a.mp4",
+      "sha256": "85494f428656e7b60445bb0eb4c60017163f8e01b7cdebb0b6afc5c22414063b",
+      "size": 6395523,
+      "category": "Training",
+      "user_approved": true,
+      "autopost_ready": true,
+      "requires_mature_review": false,
+      "hold_reason": null
+    },
+    {
+      "relative_path": "grok-video-50797641-e83c-403b-b7fd-c905c0c863be.mp4",
+      "sha256": "72281b7e17f2052cfba39caeb93b36700084046c4e2f83470765a2d0f1ec5f85",
+      "size": 13353217,
+      "category": "Combat",
+      "user_approved": true,
+      "autopost_ready": true,
+      "requires_mature_review": false,
+      "hold_reason": null
+    },
+    {
+      "relative_path": "grok-video-53763959-2453-4193-b7a4-8f034c95f8ba.mp4",
+      "sha256": "e2fb95f96e7d25ad4a14ed43f21b05ce7fc43ed2f5f7c8178c7a0cfa9c4cafae",
+      "size": 7617040,
+      "category": "Training",
+      "user_approved": true,
+      "autopost_ready": true,
+      "requires_mature_review": false,
+      "hold_reason": null
+    },
+    {
+      "relative_path": "grok-video-5d403fe1-5895-4df8-ba59-2005a42cdc52-0.mp4",
+      "sha256": "8395e4b3735a7f1c43a5307b86114d20bb5b459c6202bff575c9cd6dad1f93c8",
+      "size": 1698033,
+      "category": "Training",
+      "user_approved": true,
+      "autopost_ready": false,
+      "requires_mature_review": true,
+      "hold_reason": "prior_rejection_retained_suggestive_framing"
+    },
+    {
+      "relative_path": "grok-video-5da48c35-cfd8-488b-b2aa-41dbfc7613b7-2.mp4",
+      "sha256": "6a7566fd8510831fc682bf8af56cf31e75f055ce4e3e35955e8f67caf1466dc2",
+      "size": 1527982,
+      "category": "Physique",
+      "user_approved": true,
+      "autopost_ready": true,
+      "requires_mature_review": false,
+      "hold_reason": null
+    },
+    {
+      "relative_path": "grok-video-6372e9c4-d589-40d1-a0f2-7f5ba06ac12f.mp4",
+      "sha256": "b930500053cbd749333289a186e41b2802b24907b953e40a28578dc2763fedac",
+      "size": 14577189,
+      "category": "Running",
+      "user_approved": true,
+      "autopost_ready": true,
+      "requires_mature_review": false,
+      "hold_reason": null
+    },
+    {
+      "relative_path": "grok-video-654abeff-3740-4bee-93d1-e370ce3b204c.mp4",
+      "sha256": "2dc035579ecc50aa1b545031f0d20e30e0573bec359a91d6159818ccd8c66e68",
+      "size": 8304562,
+      "category": "Training",
+      "user_approved": true,
+      "autopost_ready": true,
+      "requires_mature_review": false,
+      "hold_reason": null
+    },
+    {
+      "relative_path": "grok-video-6725d509-2870-4586-989d-8f70d7c307f4.mp4",
+      "sha256": "af1b356ab69c0f22ed705dc7b7267870e0b001726bef979466469268c0cdaab6",
+      "size": 5451250,
+      "category": "Training",
+      "user_approved": true,
+      "autopost_ready": true,
+      "requires_mature_review": false,
+      "hold_reason": null
+    },
+    {
+      "relative_path": "grok-video-6a954c38-7d33-4705-8c64-6af92978d07c.mp4",
+      "sha256": "fdf938927a11e8c5a9379cfae381c3b5e520ef59fb4459f3121f7844889ef800",
+      "size": 13078663,
+      "category": "Training",
+      "user_approved": true,
+      "autopost_ready": true,
+      "requires_mature_review": false,
+      "hold_reason": null
+    },
+    {
+      "relative_path": "grok-video-6caad25c-2c7d-43a0-9295-0f8841c64263.mp4",
+      "sha256": "c28b1e3077d0d5e15a1e5d680c05860b79ef7e17310c0fcc21d46f5bd39617b6",
+      "size": 5490314,
+      "category": "Training",
+      "user_approved": true,
+      "autopost_ready": true,
+      "requires_mature_review": false,
+      "hold_reason": null
+    },
+    {
+      "relative_path": "grok-video-6e524e88-42af-47d3-8793-36b4de3b1358.mp4",
+      "sha256": "e516e59b9608beffdff4b72dd6c7dda760b40620faa75a4e4df5becc5ff55123",
+      "size": 9990280,
+      "category": "Powerlifting",
+      "user_approved": true,
+      "autopost_ready": true,
+      "requires_mature_review": false,
+      "hold_reason": null
+    },
+    {
+      "relative_path": "grok-video-726d016e-6564-4c80-b080-a31f01d19051.mp4",
+      "sha256": "4c1932d52cf6b819aff0d3b8fd676ec97727d5363e497a83ab431bc49be17a59",
+      "size": 9876508,
+      "category": "Running",
+      "user_approved": true,
+      "autopost_ready": true,
+      "requires_mature_review": false,
+      "hold_reason": null
+    },
+    {
+      "relative_path": "grok-video-753cef75-3526-4b62-b627-b1e761d82389-1.mp4",
+      "sha256": "291a6bded2abb697837287b33398dbd05c9b9f0ffe178daa8a001a8988cf95e1",
+      "size": 2102037,
+      "category": "Training",
+      "user_approved": true,
+      "autopost_ready": false,
+      "requires_mature_review": true,
+      "hold_reason": "prior_rejection_retained_suggestive_framing"
+    },
+    {
+      "relative_path": "grok-video-8127f86f-563b-4f0a-a56d-4b91326e26cd.mp4",
+      "sha256": "f173cc203487d2882e74ba15220d4338ec40db531ccac9945a21013eac91f052",
+      "size": 13130692,
+      "category": "Training",
+      "user_approved": true,
+      "autopost_ready": true,
+      "requires_mature_review": false,
+      "hold_reason": null
+    },
+    {
+      "relative_path": "grok-video-853fb0bd-d122-4622-928f-5416bc1acb41.mp4",
+      "sha256": "28d0e669d6e43d98a1dbe411194935717c3fc0324e7902dffd68600c5b49c031",
+      "size": 9666024,
+      "category": "Training",
+      "user_approved": true,
+      "autopost_ready": true,
+      "requires_mature_review": false,
+      "hold_reason": null
+    },
+    {
+      "relative_path": "grok-video-8dbd4cf3-b4d7-4637-a685-5ecf10c82a37.mp4",
+      "sha256": "519f6e10db48dc3e571c8c041b30096f33b7b4a6e22ae620bda0f8057135d846",
+      "size": 5693250,
+      "category": "Combat",
+      "user_approved": true,
+      "autopost_ready": true,
+      "requires_mature_review": false,
+      "hold_reason": null
+    },
+    {
+      "relative_path": "grok-video-9027790a-457f-4899-aacc-aaedd6a9910d (1).mp4",
+      "sha256": "0d1209dfd90ae18939ff5de4b88e25d88e21fb2454515a09b41b54c23fe3a7c3",
+      "size": 4855239,
+      "category": "Pullups",
+      "user_approved": true,
+      "autopost_ready": true,
+      "requires_mature_review": false,
+      "hold_reason": null
+    },
+    {
+      "relative_path": "grok-video-9027790a-457f-4899-aacc-aaedd6a9910d (2).mp4",
+      "sha256": "dd406c025d308d013593ca963ae4f81763eafeb32da5ca2cc59ee1ceaf8b9b17",
+      "size": 4877175,
+      "category": "Pullups",
+      "user_approved": true,
+      "autopost_ready": true,
+      "requires_mature_review": false,
+      "hold_reason": null
+    },
+    {
+      "relative_path": "grok-video-9027790a-457f-4899-aacc-aaedd6a9910d.mp4",
+      "sha256": "ec4e7444d3bb06293f845721bdd6447a034d5be158e86b735b3294d3d6bd6c33",
+      "size": 3962491,
+      "category": "Pullups",
+      "user_approved": true,
+      "autopost_ready": true,
+      "requires_mature_review": false,
+      "hold_reason": null
+    },
+    {
+      "relative_path": "grok-video-95b23bfd-b7c3-48ca-8841-3daca29b95fd.mp4",
+      "sha256": "f21ca9b4da2a670d8ee9261df4a5d3004fd83d86bccd0807b629789be46d53cb",
+      "size": 6041444,
+      "category": "Training",
+      "user_approved": true,
+      "autopost_ready": true,
+      "requires_mature_review": false,
+      "hold_reason": null
+    },
+    {
+      "relative_path": "grok-video-97281a61-60f2-4231-9dc6-7c15eab6eda5-0.mp4",
+      "sha256": "4018b94f802a930eebc9c1441a2d16a99d982d94b6fa6b764e6664cba13377a1",
+      "size": 1591056,
+      "category": "Training",
+      "user_approved": true,
+      "autopost_ready": false,
+      "requires_mature_review": true,
+      "hold_reason": "prior_rejection_retained_suggestive_framing"
+    },
+    {
+      "relative_path": "grok-video-99d3fb28-f1f0-41ff-a031-cfccbc252ff1.mp4",
+      "sha256": "ff9c6a237629a9ec201aea140ce2facbcc0e805c7702ddd6470bd66b99e63269",
+      "size": 8409639,
+      "category": "Training",
+      "user_approved": true,
+      "autopost_ready": true,
+      "requires_mature_review": false,
+      "hold_reason": null
+    },
+    {
+      "relative_path": "grok-video-9e83cb11-b91f-4fed-8110-ec80bdb0f18d.mp4",
+      "sha256": "3e9b23f54f48cc3b136a82cc05a5f3e15570d6c5c62bb12a00c2ff23646efd4d",
+      "size": 7458705,
+      "category": "Running",
+      "user_approved": true,
+      "autopost_ready": true,
+      "requires_mature_review": false,
+      "hold_reason": null
+    },
+    {
+      "relative_path": "grok-video-9ec02fde-5a30-4a9d-88d3-38abc19810c4.mp4",
+      "sha256": "7032b3483ee64a930cfeea7c772fb246ad3c4d26bfcf1e610595ded40f2a3e8a",
+      "size": 3758785,
+      "category": "Training",
+      "user_approved": true,
+      "autopost_ready": true,
+      "requires_mature_review": false,
+      "hold_reason": null
+    },
+    {
+      "relative_path": "grok-video-a05d06d9-85ec-4ca1-a3d3-14afceec6875.mp4",
+      "sha256": "afdfc02fbee7e14274050277466efd6c5e117b401fe8e3157c679b72bbe94ffd",
+      "size": 6613932,
+      "category": "Training",
+      "user_approved": true,
+      "autopost_ready": true,
+      "requires_mature_review": false,
+      "hold_reason": null
+    },
+    {
+      "relative_path": "grok-video-a240451e-789a-4d3a-8fdf-cf7e293f13fc.mp4",
+      "sha256": "200ab43863a3d54e91dd1d68731dc615156029770414e2f4160e00228c08ec36",
+      "size": 7257223,
+      "category": "Powerlifting",
+      "user_approved": true,
+      "autopost_ready": true,
+      "requires_mature_review": false,
+      "hold_reason": null
+    },
+    {
+      "relative_path": "grok-video-a36921cc-43bf-4acf-85bb-56b0a365b8d5.mp4",
+      "sha256": "8d7598c5427dcc89f78f3c529905def93e33170591a151736e334c66c2a57f81",
+      "size": 5284260,
+      "category": "Training",
+      "user_approved": true,
+      "autopost_ready": true,
+      "requires_mature_review": false,
+      "hold_reason": null
+    },
+    {
+      "relative_path": "grok-video-ad4c4387-dc21-4080-a395-6ea740831fee.mp4",
+      "sha256": "c01c492e7d0ae34898b6aeb17d309ebc99c9b16c2d1422b40a61e7a7dce71c06",
+      "size": 6014137,
+      "category": "Training",
+      "user_approved": true,
+      "autopost_ready": true,
+      "requires_mature_review": false,
+      "hold_reason": null
+    },
+    {
+      "relative_path": "grok-video-b7321ee6-645b-47ac-a084-1a33d75f6f7d.mp4",
+      "sha256": "7a04e8999877890acf98ba23a85f4cbdb581cf068bc9250b1af712281462acea",
+      "size": 13902438,
+      "category": "Running",
+      "user_approved": true,
+      "autopost_ready": true,
+      "requires_mature_review": false,
+      "hold_reason": null
+    },
+    {
+      "relative_path": "grok-video-b91d2cf0-5ff4-4705-904a-c4027a2078fe.mp4",
+      "sha256": "f5c58031b336aeaac61ae03760c4598f4c1c9a5b5b218cd1a966fd8dadd1f00a",
+      "size": 6773495,
+      "category": "Training",
+      "user_approved": true,
+      "autopost_ready": true,
+      "requires_mature_review": false,
+      "hold_reason": null
+    },
+    {
+      "relative_path": "grok-video-c570ca4e-402d-49e2-b2d8-512590105521.mp4",
+      "sha256": "a0c9b3ba17a1a4a0e1a8c70914f42e121dfdde4835d8c29941869be498e0f0a6",
+      "size": 10907395,
+      "category": "Training",
+      "user_approved": true,
+      "autopost_ready": true,
+      "requires_mature_review": false,
+      "hold_reason": null
+    },
+    {
+      "relative_path": "grok-video-ca1eb97e-cc0b-4024-ab96-40009accd446 (1).mp4",
+      "sha256": "50841252a54f9a1f4c07b2324dd3b9a7252d7ccf1dff8274f0fa23fb68ea830f",
+      "size": 8060992,
+      "category": "Training",
+      "user_approved": true,
+      "autopost_ready": true,
+      "requires_mature_review": false,
+      "hold_reason": null
+    },
+    {
+      "relative_path": "grok-video-ca1eb97e-cc0b-4024-ab96-40009accd446 (10).mp4",
+      "sha256": "183db34c505e4c1266fa9b6193cba11ede5b8279a3d2c8297095d660066511e2",
+      "size": 10690636,
+      "category": "Combat",
+      "user_approved": true,
+      "autopost_ready": true,
+      "requires_mature_review": false,
+      "hold_reason": null
+    },
+    {
+      "relative_path": "grok-video-ca1eb97e-cc0b-4024-ab96-40009accd446 (11).mp4",
+      "sha256": "bc69a1d1f50bf4e3f815ac0fe5ac14d71417eccae33a5fc4de79244704d73b05",
+      "size": 7653762,
+      "category": "Training",
+      "user_approved": true,
+      "autopost_ready": true,
+      "requires_mature_review": false,
+      "hold_reason": null
+    },
+    {
+      "relative_path": "grok-video-ca1eb97e-cc0b-4024-ab96-40009accd446 (12).mp4",
+      "sha256": "fba61853564ae04a8cf4e03a09d699cd9cf3ca5f9337f677df2f77cff6d24f0b",
+      "size": 7005815,
+      "category": "Training",
+      "user_approved": true,
+      "autopost_ready": true,
+      "requires_mature_review": false,
+      "hold_reason": null
+    },
+    {
+      "relative_path": "grok-video-ca1eb97e-cc0b-4024-ab96-40009accd446 (13).mp4",
+      "sha256": "a1bf28c40c6a30179d9a066216c8cc1398255b6edce8ef0ceb8a042405dd44d6",
+      "size": 7837948,
+      "category": "Training",
+      "user_approved": true,
+      "autopost_ready": true,
+      "requires_mature_review": false,
+      "hold_reason": null
+    },
+    {
+      "relative_path": "grok-video-ca1eb97e-cc0b-4024-ab96-40009accd446 (2).mp4",
+      "sha256": "0c466dc9b0214b7494ca9c2531969c5b052ee2d620f3270c2045b998b3104042",
+      "size": 8444771,
+      "category": "Training",
+      "user_approved": true,
+      "autopost_ready": true,
+      "requires_mature_review": false,
+      "hold_reason": null
+    },
+    {
+      "relative_path": "grok-video-ca1eb97e-cc0b-4024-ab96-40009accd446 (3).mp4",
+      "sha256": "2d6bbc455f09e8ef7ec6b3c3b674749295f6bae86130f8351e1e87bbda624578",
+      "size": 6968634,
+      "category": "Combat",
+      "user_approved": true,
+      "autopost_ready": true,
+      "requires_mature_review": false,
+      "hold_reason": null
+    },
+    {
+      "relative_path": "grok-video-ca1eb97e-cc0b-4024-ab96-40009accd446 (4).mp4",
+      "sha256": "459d013bdb66247979a188a6a590d3fef5a6f7da866cc9fc7b365983381adbd7",
+      "size": 5539607,
+      "category": "Powerlifting",
+      "user_approved": true,
+      "autopost_ready": true,
+      "requires_mature_review": false,
+      "hold_reason": null
+    },
+    {
+      "relative_path": "grok-video-ca1eb97e-cc0b-4024-ab96-40009accd446 (5).mp4",
+      "sha256": "634380bbc9abb3d2cbf45a07cc07078d34ed3acd0be45f4741656f42925dab6e",
+      "size": 9214522,
+      "category": "Training",
+      "user_approved": true,
+      "autopost_ready": true,
+      "requires_mature_review": false,
+      "hold_reason": null
+    },
+    {
+      "relative_path": "grok-video-ca1eb97e-cc0b-4024-ab96-40009accd446 (6).mp4",
+      "sha256": "b1d964f4eac95bc66cc960d52929376fb98d9f2f0501fff2a3a1e34422aaadcc",
+      "size": 4702448,
+      "category": "Training",
+      "user_approved": true,
+      "autopost_ready": true,
+      "requires_mature_review": false,
+      "hold_reason": null
+    },
+    {
+      "relative_path": "grok-video-ca1eb97e-cc0b-4024-ab96-40009accd446 (7).mp4",
+      "sha256": "5823a938b30932f3072af09836f8e5894c9765f72da47717916be330819a6f7e",
+      "size": 19234731,
+      "category": "Training",
+      "user_approved": true,
+      "autopost_ready": true,
+      "requires_mature_review": false,
+      "hold_reason": null
+    },
+    {
+      "relative_path": "grok-video-ca1eb97e-cc0b-4024-ab96-40009accd446 (8).mp4",
+      "sha256": "48bf20f42846115c2624c163b3b91366e9f07e109474226e3127fcacca32216f",
+      "size": 9735697,
+      "category": "Training",
+      "user_approved": true,
+      "autopost_ready": true,
+      "requires_mature_review": false,
+      "hold_reason": null
+    },
+    {
+      "relative_path": "grok-video-ca1eb97e-cc0b-4024-ab96-40009accd446 (9).mp4",
+      "sha256": "65f82b6061b3373e4bf0bb35a8e0dd517be6ae469c46bba8c755f8d7883e6e09",
+      "size": 9682979,
+      "category": "Training",
+      "user_approved": true,
+      "autopost_ready": true,
+      "requires_mature_review": false,
+      "hold_reason": null
+    },
+    {
+      "relative_path": "grok-video-ca1eb97e-cc0b-4024-ab96-40009accd446.mp4",
+      "sha256": "ae843458f26121bc2159c7201f6b2aa676b204a19fbc3347cd8083032fa9a0ee",
+      "size": 4104765,
+      "category": "Training",
+      "user_approved": true,
+      "autopost_ready": true,
+      "requires_mature_review": false,
+      "hold_reason": null
+    },
+    {
+      "relative_path": "grok-video-ce9efd41-d7e3-476d-a6cc-2265e784c4dc.mp4",
+      "sha256": "5c2d782718a2ab7c4a31cbc328d9667b2ced5b1022d92728f59752c852430e9e",
+      "size": 10356125,
+      "category": "Running",
+      "user_approved": true,
+      "autopost_ready": true,
+      "requires_mature_review": false,
+      "hold_reason": null
+    },
+    {
+      "relative_path": "grok-video-d300c67a-1f71-4338-b3da-eeee9755497b.mp4",
+      "sha256": "686132f12b57b0a83198b9ce6434438ac1faeeb24196177e78af6085b254d6cb",
+      "size": 16780890,
+      "category": "Training",
+      "user_approved": true,
+      "autopost_ready": true,
+      "requires_mature_review": false,
+      "hold_reason": null
+    },
+    {
+      "relative_path": "grok-video-d4bded2e-7725-445c-8169-b87a6ddb25cc.mp4",
+      "sha256": "c124fc360930f5d973d07353b91bb855d040bd5e59eed47f2908529d5ea1ee8b",
+      "size": 10993749,
+      "category": "Training",
+      "user_approved": true,
+      "autopost_ready": true,
+      "requires_mature_review": false,
+      "hold_reason": null
+    },
+    {
+      "relative_path": "grok-video-da2050e7-d406-456f-9e85-e5999938b4e6.mp4",
+      "sha256": "87ae24ab91efddeac2bd86a018986306f313e908b04aa8e91861ecc5b4e3cf3c",
+      "size": 8735534,
+      "category": "Training",
+      "user_approved": true,
+      "autopost_ready": true,
+      "requires_mature_review": false,
+      "hold_reason": null
+    },
+    {
+      "relative_path": "grok-video-dc27ee67-5978-49c3-9a72-2be1095eb0ff.mp4",
+      "sha256": "048cc19e1e7d8e93432268e876467b35758605bd882cc7a67b56de6f603599ee",
+      "size": 10814183,
+      "category": "Training",
+      "user_approved": true,
+      "autopost_ready": true,
+      "requires_mature_review": false,
+      "hold_reason": null
+    },
+    {
+      "relative_path": "grok-video-e106bbe2-097e-4d69-aed6-940d5a05d51c.mp4",
+      "sha256": "33cd684765e11fee6534b1140881d8b075464e7c7b524898e1b96943050e9779",
+      "size": 11922444,
+      "category": "Training",
+      "user_approved": true,
+      "autopost_ready": true,
+      "requires_mature_review": false,
+      "hold_reason": null
+    },
+    {
+      "relative_path": "grok-video-e1600bdf-de0b-4e09-966b-9177200ea467.mp4",
+      "sha256": "e82622e31578fc61bf47a57fdae2bc2edb3b6487e0c06581977f2938d4f9acb6",
+      "size": 6177152,
+      "category": "Training",
+      "user_approved": true,
+      "autopost_ready": true,
+      "requires_mature_review": false,
+      "hold_reason": null
+    },
+    {
+      "relative_path": "grok-video-e209bbb8-b479-46d2-a0fe-4682e6df3843.mp4",
+      "sha256": "6ea011545f1c316c3259ef5c9bf916560ca8dc1726ad4df2c00ddb7ae2ee8555",
+      "size": 4215988,
+      "category": "Powerlifting",
+      "user_approved": true,
+      "autopost_ready": true,
+      "requires_mature_review": false,
+      "hold_reason": null
+    },
+    {
+      "relative_path": "grok-video-f600a68b-c2d7-4b54-b48e-ab2b22833c2b.mp4",
+      "sha256": "a74403886aaa140ba002d525d100c91221e94267de333d8096d7dbfbef9cf94d",
+      "size": 7105319,
+      "category": "Powerlifting",
+      "user_approved": true,
+      "autopost_ready": true,
+      "requires_mature_review": false,
+      "hold_reason": null
+    },
+    {
+      "relative_path": "grok-video-ff676863-1123-4c84-ad90-8867311601f9.mp4",
+      "sha256": "478bcd6eeb8164d28fc7bf53ea03b9d11dcffee4364dfee6018920275c91e58e",
+      "size": 4088274,
+      "category": "Training",
+      "user_approved": true,
+      "autopost_ready": true,
+      "requires_mature_review": false,
+      "hold_reason": null
+    },
+    {
+      "relative_path": "grok_video_083308_001_1.mp4",
+      "sha256": "7c152d7c898e583ea3b29f6abcf29caebf87139bcf7d3dc0a0f80c0bae186bf2",
+      "size": 1330801,
+      "category": "Training",
+      "user_approved": true,
+      "autopost_ready": false,
+      "requires_mature_review": true,
+      "hold_reason": "prior_rejection_retained_suggestive_framing"
+    },
+    {
+      "relative_path": "grok_video_084504_005_5.mp4",
+      "sha256": "efb2b190267eaaf9c4562371fb148688a853c927ed80f9d1baeea2736aae6786",
+      "size": 1476518,
+      "category": "Training",
+      "user_approved": true,
+      "autopost_ready": false,
+      "requires_mature_review": true,
+      "hold_reason": "prior_rejection_retained_suggestive_framing"
+    },
+    {
+      "relative_path": "grok_video_084536_007_7.mp4",
+      "sha256": "168f41280c79ac789b1407d2cc1b82c5bbcbfdcd5073f5824486e4e99de58eea",
+      "size": 1336091,
+      "category": "Bodybuilding",
+      "user_approved": true,
+      "autopost_ready": true,
+      "requires_mature_review": false,
+      "hold_reason": null
+    },
+    {
+      "relative_path": "grok_video_084608_009_9.mp4",
+      "sha256": "f4e995d611c1a6be9414909c7a9b10ef924a89a5d9d68d07dce9ab138184a8ac",
+      "size": 1525839,
+      "category": "FitnessDance",
+      "user_approved": true,
+      "autopost_ready": true,
+      "requires_mature_review": false,
+      "hold_reason": null
+    },
+    {
+      "relative_path": "grok_video_084624_010_10.mp4",
+      "sha256": "9aeb8db3411e94fc278366de2f3a545b91551e9b48b0a781c3af0235a9bd6a99",
+      "size": 796519,
+      "category": "Bodybuilding",
+      "user_approved": true,
+      "autopost_ready": true,
+      "requires_mature_review": false,
+      "hold_reason": null
+    },
+    {
+      "relative_path": "grok_video_084712_013_13.mp4",
+      "sha256": "4c7ad01aaa300d87e63f84a86804fe9f86ba8663429b40fa3bb7d1659ca910cc",
+      "size": 1212306,
+      "category": "Pullups",
+      "user_approved": true,
+      "autopost_ready": true,
+      "requires_mature_review": false,
+      "hold_reason": null
+    },
+    {
+      "relative_path": "grok_video_084916_017_17.mp4",
+      "sha256": "8bf2ee73bc280ca55bb44a1f6eebd42cca02da2833b47f30b10cd4c1e0769fdc",
+      "size": 1402604,
+      "category": "Pullups",
+      "user_approved": true,
+      "autopost_ready": true,
+      "requires_mature_review": false,
+      "hold_reason": null
+    },
+    {
+      "relative_path": "grok_video_084947_018_18.mp4",
+      "sha256": "275c3bf7f9e4c37b090b1778251ed4b1a4e8514185f960685178139dbae80af3",
+      "size": 1438563,
+      "category": "Training",
+      "user_approved": true,
+      "autopost_ready": false,
+      "requires_mature_review": true,
+      "hold_reason": "prior_rejection_retained_suggestive_framing"
+    },
+    {
+      "relative_path": "grok_video_085046_020_20.mp4",
+      "sha256": "15c5235ea0237e631c83493d4017601b8deb3e6785e895d5c80bb6d533b15fa5",
+      "size": 1144126,
+      "category": "Bodybuilding",
+      "user_approved": true,
+      "autopost_ready": true,
+      "requires_mature_review": false,
+      "hold_reason": null
+    },
+    {
+      "relative_path": "Pullups/grok-video-010b842c-2e5c-48ec-b550-c522c66f1927.mp4",
+      "sha256": "659c4afab620437cf61a212854293dae43445faa8774cd66f0f1b126e36a8307",
+      "size": 1877125,
+      "category": "Pullups",
+      "user_approved": true,
+      "autopost_ready": true,
+      "requires_mature_review": false,
+      "hold_reason": null
+    },
+    {
+      "relative_path": "Pullups/grok-video-0be40c4c-e585-4a8c-ac8c-e0acff634823.mp4",
+      "sha256": "af8a7479311c91ae0f9c60efb280097d31688ce8cc43aa4b5b168494ebc5a2c0",
+      "size": 1979163,
+      "category": "Pullups",
+      "user_approved": true,
+      "autopost_ready": true,
+      "requires_mature_review": false,
+      "hold_reason": null
+    },
+    {
+      "relative_path": "Pullups/grok-video-3751dc3f-6a6f-4149-9082-260e383a256b.mp4",
+      "sha256": "ad7a0600b4b7d3e448acded7dd41339c4018fb5ee6e30d3d40cfd09170d0f72a",
+      "size": 2066402,
+      "category": "Pullups",
+      "user_approved": true,
+      "autopost_ready": true,
+      "requires_mature_review": false,
+      "hold_reason": null
+    },
+    {
+      "relative_path": "Pullups/grok-video-5d5cf896-b3d2-462b-8e34-e13eec1ae648.mp4",
+      "sha256": "6b6637d03395eacb411cc46a98b0e6457318d8953f109b8a9b51637926fcaa8f",
+      "size": 2512086,
+      "category": "Pullups",
+      "user_approved": true,
+      "autopost_ready": true,
+      "requires_mature_review": false,
+      "hold_reason": null
+    },
+    {
+      "relative_path": "Pullups/grok-video-62c80e2f-39b2-4d57-9f7f-baa34373c3e0.mp4",
+      "sha256": "5e0f889b0d2845786d29380e7c323264564b5e793eaebce607a553b8a8f75f34",
+      "size": 2545664,
+      "category": "Pullups",
+      "user_approved": true,
+      "autopost_ready": true,
+      "requires_mature_review": false,
+      "hold_reason": null
+    },
+    {
+      "relative_path": "Pullups/grok-video-9b8a86ad-52d3-43de-8f1f-59413c451dc5.mp4",
+      "sha256": "8d9b113bae84f031364e6b3508c27d7fea07ce65aef535f851e54e21d4dfda00",
+      "size": 1938523,
+      "category": "Pullups",
+      "user_approved": true,
+      "autopost_ready": true,
+      "requires_mature_review": false,
+      "hold_reason": null
+    },
+    {
+      "relative_path": "Pullups/grok-video-9bb38af6-2c15-4fb8-b4d6-e87c68767674.mp4",
+      "sha256": "82d504c785c7b5756673c905492376eed7e0fa1201ec20e440dfde1b010e3842",
+      "size": 1614147,
+      "category": "Pullups",
+      "user_approved": true,
+      "autopost_ready": true,
+      "requires_mature_review": false,
+      "hold_reason": null
+    },
+    {
+      "relative_path": "Pullups/grok-video-abc58658-d95d-4da4-8bdf-4c7456a27036.mp4",
+      "sha256": "f1aeea50cc988d2874c5809d3c6a8e0a754b5468077f03aa427026be462e3dfa",
+      "size": 2492519,
+      "category": "Pullups",
+      "user_approved": true,
+      "autopost_ready": true,
+      "requires_mature_review": false,
+      "hold_reason": null
+    },
+    {
+      "relative_path": "Pullups/grok-video-e46a5747-395a-4194-b623-cf4200defa83.mp4",
+      "sha256": "3a44dabbb1bed1e590781c15df6a133dbb90a59b98725324db5f8c1cb5a771d8",
+      "size": 2617676,
+      "category": "Pullups",
+      "user_approved": true,
+      "autopost_ready": true,
+      "requires_mature_review": false,
+      "hold_reason": null
+    },
+    {
+      "relative_path": "Pullups/grok-video-fdfadb16-acfe-4f44-bf11-299286f73f94.mp4",
+      "sha256": "28530c994fb0d9ffea819d093c3c496dee17d99c4a0e640ac4e12086c1a0bdf7",
+      "size": 2226371,
+      "category": "Training",
+      "user_approved": true,
+      "autopost_ready": false,
+      "requires_mature_review": true,
+      "hold_reason": "prior_rejection_retained_visible_clothing_detail"
+    },
+    {
+      "relative_path": "Toilet/grok-video-06316899-547a-44d2-9628-6c3d38e57099-1.mp4",
+      "sha256": "0b13cccdcb97d30b31d110bb295e66e6b10f932b503b9e52efa0848e7f3b985c",
+      "size": 2410468,
+      "category": "Training",
+      "user_approved": true,
+      "autopost_ready": false,
+      "requires_mature_review": true,
+      "hold_reason": "excluded_toilet_and_suggestive_content"
+    },
+    {
+      "relative_path": "Training/grok-video-66634583-a4c1-4b2b-b243-ef3314d64cb1.mp4",
+      "sha256": "de5ac87e90149ca062e65b34e28bc3ebbf942ee61b0babb67195d662d2c830ba",
+      "size": 9658191,
+      "category": "Training",
+      "user_approved": true,
+      "autopost_ready": false,
+      "requires_mature_review": true,
+      "hold_reason": "prior_rejection_retained_revealing_close_framing"
+    }
+  ]
+}
