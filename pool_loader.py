@@ -17,6 +17,14 @@ HUB_URL = "https://musclelove-777.github.io/content_pool.json"
 LOCAL_POOL = Path(__file__).resolve().parent / "content_pool.json"
 HTTP_TIMEOUT = 10
 URL_RE = re.compile(r"https?://[^\s)\]>]+")
+CTA_PLATFORM_MARKERS = {
+    "x": ("https://x.com/", "https://twitter.com/"),
+    "facebook": ("https://facebook.com/", "https://www.facebook.com/"),
+    "instagram": ("https://instagram.com/", "https://www.instagram.com/"),
+    "threads": ("https://threads.net/", "https://www.threads.net/"),
+    "youtube": ("https://youtube.com/", "https://www.youtube.com/", "https://youtu.be/"),
+    "tiktok": ("https://tiktok.com/", "https://www.tiktok.com/"),
+}
 
 
 def _with_utm(text: str, platform: str) -> str:
@@ -29,6 +37,22 @@ def _with_utm(text: str, platform: str) -> str:
         sep = "&" if "?" in url else "?"
         return f"{url}{sep}utm_source={platform}&utm_medium=autopost"
     return URL_RE.sub(repl, text)
+
+
+def _points_to_held_channel(text: str, platform_focus: dict) -> bool:
+    """停止中チャネルを送客先にするCTAを除外する。"""
+    normalized = text.lower()
+    for channel, focus in platform_focus.items():
+        if not isinstance(focus, dict):
+            continue
+        action = str(focus.get("action", "")).lower()
+        cadence = focus.get("cadence_factor")
+        if action != "hold" and cadence != 0:
+            continue
+        markers = CTA_PLATFORM_MARKERS.get(str(channel).lower(), ())
+        if any(marker in normalized for marker in markers):
+            return True
+    return False
 
 
 def load_pool(lane: str) -> dict:
@@ -87,7 +111,12 @@ def as_insights(lane: str, platform: str = "") -> dict:
     if templates:
         ins["recommended_templates"] = templates
 
-    ctas = [str(c).strip() for c in pool.get("cta_lines", []) if str(c).strip()]
+    platform_focus = pool.get("_platform_focus") or {}
+    ctas = [
+        str(c).strip()
+        for c in pool.get("cta_lines", [])
+        if str(c).strip() and not _points_to_held_channel(str(c), platform_focus)
+    ]
     if platform:
         ctas = [_with_utm(c, platform) for c in ctas]
     if ctas:
@@ -97,7 +126,7 @@ def as_insights(lane: str, platform: str = "") -> dict:
     if ng:
         ins["avoid_tags"] = ng
     if platform:
-        focus = (pool.get("_platform_focus") or {}).get(platform) or {}
+        focus = platform_focus.get(platform) or {}
         if focus:
             ins["platform_focus"] = focus
     conversion_focus = pool.get("_conversion_focus") or {}
