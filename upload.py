@@ -227,8 +227,8 @@ def choose_dry_run_video(sample_name=""):
     approved_local = local_videos()
     if approved_local is not None:
         if not approved_local:
-            raise ValueError("No approved local media; refusing synthetic fallback")
-        return random.choice(approved_local), "approved local recursive pool"
+            raise ValueError("No folder-approved local media; refusing synthetic fallback")
+        return random.choice(approved_local), "folder-approved local recursive pool"
     local = []
     if os.path.isdir("videos"):
         for root, dirs, filenames in os.walk("videos"):
@@ -238,8 +238,8 @@ def choose_dry_run_video(sample_name=""):
     if local:
         local = eligible_videos(local)
         if not local:
-            raise ValueError("No approved cached media")
-        return random.choice(local), "approved cached videos folder"
+            raise ValueError("No valid cached media")
+        return random.choice(local), "validated cached videos folder"
     return os.path.join("dry_run", sample_name or DRY_RUN_VIDEO_NAME), "synthetic sample"
 
 
@@ -338,7 +338,7 @@ def _cadence_slots():
 
 def main(argv=None):
     parser = argparse.ArgumentParser()
-    parser.add_argument("--media-audit", action="store_true", help="Read approval counts without credentials, network, or writes.")
+    parser.add_argument("--media-audit", action="store_true", help="Read folder-pool counts without credentials, network, or writes.")
     parser.add_argument("--dry-run", action="store_true", help="Build a Tumblr post preview without auth, download, or upload.")
     parser.add_argument("--sample-name", default="", help="Synthetic video name for dry-run when no local videos exist.")
     args = parser.parse_args(argv)
@@ -350,10 +350,11 @@ def main(argv=None):
     if args.dry_run or env_flag("TUMBLR_DRY_RUN") or env_flag("DRY_RUN"):
         return run_dry_run(args.sample_name.strip())
 
-    _slots = _cadence_slots()
-    if _slots < 1:
-        print("[cadence] 自動頻度調整により今回はスキップします")
-        return 0
+    if not env_flag("TUMBLR_FORCE_POST"):
+        _slots = _cadence_slots()
+        if _slots < 1:
+            print("[cadence] 自動頻度調整により今回はスキップします")
+            return 0
 
     approved_local = local_videos()
     if pytumblr is None:

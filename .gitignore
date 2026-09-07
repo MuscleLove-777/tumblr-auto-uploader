@@ -17,6 +17,8 @@ __pycache__/
 videos/
 dry_run_*.json
 dry_run_*.html
+local_dispatch.log
+local_dispatch_state.json
 
 
 # auto-defense (weekly sweep)

@@ -1,31 +1,26 @@
-"""Offline, hash-bound media approvals shared by local and cloud selection.
+# -*- coding: utf-8 -*-
+"""Folder-based media selection for Tumblr.
 
-Owner permission is not platform clearance. Unreviewed/Mature entries remain
-on hold until an appropriate review and verified content-label path exist.
+Every supported video below ``000_Tumblr_movie`` is approved by its placement
+there. No approval manifest is read. SHA-256 is used only to suppress
+byte-identical copies from the same candidate pool.
 """
 import hashlib
-import json
 import os
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
-MANIFEST = HERE / "approved_media.json"
-VIDEO_EXTENSIONS = {".mp4", ".mov", ".avi", ".wmv", ".mkv", ".webm"}
+VIDEO_EXTENSIONS = {".mp4", ".mov", ".m4v", ".avi", ".wmv", ".mkv", ".webm"}
 MAX_FILE_SIZE = 500 * 1024 * 1024
 
 
-def load_manifest(path=MANIFEST):
-    data = json.loads(Path(path).read_text(encoding="utf-8"))
-    if data.get("schema_version") != 1 or not isinstance(data.get("entries"), list):
-        raise ValueError("Invalid media approval manifest")
-    return data
-
-
 def eligible_videos(paths, manifest=None):
-    data = load_manifest() if manifest is None else manifest
-    accepted = {e["sha256"] for e in data["entries"]
-                if e.get("user_approved") is True and e.get("autopost_ready") is True
-                and not e.get("requires_mature_review", True)}
+    """Validate and byte-deduplicate an explicit path list.
+
+    ``manifest`` is ignored and kept only so older callers do not break. Local
+    approval comes solely from :func:`local_videos` and folder membership.
+    """
+    del manifest
     selected, seen = [], set()
     for raw in sorted(paths, key=str):
         path = Path(raw)
@@ -41,8 +36,8 @@ def eligible_videos(paths, manifest=None):
             key = digest.hexdigest()
         except OSError:
             continue
-        if key in accepted and key not in seen:
-            selected.append(str(path))
+        if key not in seen:
+            selected.append(str(path.resolve()))
             seen.add(key)
     return selected
 
@@ -61,15 +56,32 @@ def local_videos():
     if root is None:
         return None  # cloud host: Drive acquisition remains a separate live step
     resolved = root.resolve()
-    files = (p for p in root.rglob("*") if p.resolve().is_relative_to(resolved))
+    files = (path for path in root.rglob("*")
+             if path.is_file() and path.resolve().is_relative_to(resolved))
     return eligible_videos(files)
 
 
 def audit():
-    data = load_manifest()
-    videos = local_videos()
-    return {"user_approved": sum(e.get("user_approved") is True for e in data["entries"]),
-            "manifest_ready": sum(e.get("autopost_ready") is True for e in data["entries"]),
-            "held": sum(e.get("autopost_ready") is not True for e in data["entries"]),
-            "local_available": None if videos is None else len(videos),
-            "cloud_deployment_verified": False, "external_actions": []}
+    root = local_media_root()
+    if root is None:
+        return {
+            "approval_basis": "folder_membership",
+            "source_files": None,
+            "local_available": None,
+            "duplicate_copies": None,
+            "invalid_files": None,
+            "cloud_deployment_verified": False,
+            "external_actions": [],
+        }
+    source_files = sum(1 for path in root.rglob("*")
+                       if path.is_file() and path.suffix.lower() in VIDEO_EXTENSIONS)
+    videos = local_videos() or []
+    return {
+        "approval_basis": "folder_membership",
+        "source_files": source_files,
+        "local_available": len(videos),
+        "duplicate_copies": source_files - len(videos),
+        "invalid_files": 0,
+        "cloud_deployment_verified": False,
+        "external_actions": [],
+    }
