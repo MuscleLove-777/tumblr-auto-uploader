@@ -1,0 +1,117 @@
+{
+  "checked_at": "2026-09-27T14:51:02.652160+00:00",
+  "repairs": [],
+  "channels": [
+    {
+      "repo": "tumblr-auto-uploader",
+      "issues": [
+        "confirmed_post_older_than_24h"
+      ],
+      "workflows": [
+        {
+          "path": ".github/workflows/engage.yml",
+          "state": "active"
+        },
+        {
+          "path": ".github/workflows/upload.yml",
+          "state": "active"
+        }
+      ],
+      "latest_run": {
+        "id": 36327366215,
+        "created_at": "2026-09-27T14:50:23Z",
+        "status": "completed",
+        "conclusion": "success",
+        "event": "workflow_dispatch"
+      },
+      "last_confirmed_post": "2026-09-24T05:00:33+00:00"
+    },
+    {
+      "repo": "deviantart-auto-uploader",
+      "issues": [],
+      "workflows": [
+        {
+          "path": ".github/workflows/rescue.yml",
+          "state": "active"
+        },
+        {
+          "path": ".github/workflows/upload.yml",
+          "state": "active"
+        }
+      ],
+      "latest_run": {
+        "id": 36321586785,
+        "created_at": "2026-09-27T13:12:21Z",
+        "status": "completed",
+        "conclusion": "skipped",
+        "event": "workflow_run"
+      }
+    },
+    {
+      "repo": "ameblo-auto-uploader",
+      "issues": [],
+      "workflows": [
+        {
+          "path": ".github/workflows/ameblo-post.yml",
+          "state": "active"
+        }
+      ],
+      "latest_run": {
+        "id": 36326261871,
+        "created_at": "2026-09-27T14:32:05Z",
+        "status": "completed",
+        "conclusion": "success",
+        "event": "schedule"
+      }
+    },
+    {
+      "repo": "fc2-auto-uploader",
+      "issues": [],
+      "workflows": [
+        {
+          "path": ".github/workflows/fc2-cleanup-titles.yml",
+          "state": "active"
+        },
+        {
+          "path": ".github/workflows/fc2-post.yml",
+          "state": "active"
+        }
+      ],
+      "latest_run": {
+        "id": 36314805788,
+        "created_at": "2026-09-27T11:09:09Z",
+        "status": "completed",
+        "conclusion": "success",
+        "event": "schedule"
+      }
+    },
+    {
+      "repo": "fc2-adult-auto-uploader",
+      "issues": [
+        "audit_error:RuntimeError"
+      ]
+    },
+    {
+      "repo": "hatena-auto-uploader",
+      "issues": [],
+      "workflows": [
+        {
+          "path": ".github/workflows/hatena-post-musclelove777.yml",
+          "state": "active"
+        },
+        {
+          "path": ".github/workflows/hatena-post.yml",
+          "state": "active"
+        }
+      ],
+      "latest_run": {
+        "id": 36313244399,
+        "created_at": "2026-09-27T10:39:40Z",
+        "status": "completed",
+        "conclusion": "success",
+        "event": "schedule"
+      }
+    }
+  ],
+  "schedule_present": true
+}
