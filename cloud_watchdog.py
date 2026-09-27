@@ -7,8 +7,14 @@ from pathlib import Path
 
 OWN = "MuscleLove-777/tumblr-auto-uploader"
 REPOS = ["tumblr-auto-uploader", "deviantart-auto-uploader",
-         "ameblo-auto-uploader", "fc2-auto-uploader",
-         "fc2-adult-auto-uploader", "hatena-auto-uploader"]
+         "ameblo-auto-uploader", "fc2-auto-uploader", "hatena-auto-uploader"]
+PUBLISHERS = {
+    "tumblr-auto-uploader": {".github/workflows/upload.yml"},
+    "deviantart-auto-uploader": {".github/workflows/upload.yml"},
+    "ameblo-auto-uploader": {".github/workflows/ameblo-post.yml"},
+    "fc2-auto-uploader": {".github/workflows/fc2-post.yml"},
+    "hatena-auto-uploader": {".github/workflows/hatena-post.yml", ".github/workflows/hatena-post-musclelove777.yml"},
+}
 
 
 def gh(*args):
@@ -62,12 +68,10 @@ def main():
         row = {"repo": repo, "issues": []}
         try:
             data = gh("api", f"repos/MuscleLove-777/{repo}/actions/workflows?per_page=100")
-            workflows = [w for w in data["workflows"]
-                         if w["path"] != ".github/workflows/uploader-watchdog.yml"]
+            workflows = [w for w in data["workflows"] if w["path"] in PUBLISHERS[repo]]
             row["workflows"] = [{"path": w["path"], "state": w["state"]} for w in workflows]
             runs_data = gh("api", f"repos/MuscleLove-777/{repo}/actions/runs?per_page=20")
-            runs = [r for r in runs_data["workflow_runs"]
-                    if r.get("path") != ".github/workflows/uploader-watchdog.yml"]
+            runs = [r for r in runs_data["workflow_runs"] if r.get("path") in PUBLISHERS[repo]]
             row["latest_run"] = ({k: runs[0].get(k) for k in
                                   ("id", "created_at", "status", "conclusion", "event")}
                                  if runs else None)
@@ -77,6 +81,8 @@ def main():
                 row["issues"].append("no_publisher_runs")
             elif runs[0]["conclusion"] in {"failure", "cancelled", "timed_out"}:
                 row["issues"].append("latest_publisher_failed")
+            elif datetime.fromisoformat(runs[0]["created_at"].replace("Z", "+00:00")) < now - timedelta(hours=48):
+                row["issues"].append("publisher_run_older_than_48h")
             if repo == "tumblr-auto-uploader":
                 data = json.loads(Path("posted_log.json").read_text(encoding="utf-8"))
                 posts = data if isinstance(data, list) else data.get("posts", [])
@@ -99,7 +105,8 @@ def main():
     summary += "\n\nRepairs: " + (", ".join(report["repairs"]) or "none")
     Path(os.environ.get("GITHUB_STEP_SUMMARY", "cloud_watchdog_summary.md")).write_text(summary, encoding="utf-8")
     print(summary)
+    return int(any(r["issues"] for r in report["channels"]))
 
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())
