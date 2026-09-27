@@ -20,10 +20,10 @@ MAX_POSTS = 60  # 直近60投稿分のnotesを追跡（それより古い変種�
 
 
 def main():
-    consumer_key = os.environ.get("TUMBLR_CONSUMER_KEY", "")
-    consumer_secret = os.environ.get("TUMBLR_CONSUMER_SECRET", "")
-    oauth_token = os.environ.get("TUMBLR_OAUTH_TOKEN", "")
-    oauth_token_secret = os.environ.get("TUMBLR_OAUTH_TOKEN_SECRET", "")
+    consumer_key = os.environ.get("TUMBLR_CONSUMER_KEY")
+    consumer_secret = os.environ.get("TUMBLR_CONSUMER_SECRET")
+    oauth_token = os.environ.get("TUMBLR_OAUTH_TOKEN")
+    oauth_token_secret = os.environ.get("TUMBLR_OAUTH_TOKEN_SECRET")
     if not all([consumer_key, consumer_secret, oauth_token, oauth_token_secret]):
         print("skip: missing Tumblr credentials")
         return 0

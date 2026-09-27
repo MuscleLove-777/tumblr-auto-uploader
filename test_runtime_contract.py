@@ -37,8 +37,8 @@ class RuntimeContractTests(unittest.TestCase):
         text = (HERE / ".github" / "workflows" / "upload.yml").read_text(
             encoding="utf-8-sig"
         )
-        self.assertEqual(text.count("LINE_NOTIFY_SKIPPED credentials_unavailable"), 2)
-        self.assertEqual(text.count("curl --fail-with-body --silent --show-error"), 2)
+        self.assertIn("python notify.py failure", text)
+        self.assertIn("python notify.py success", text)
         self.assertNotIn("curl -s -X POST https://api.line.me", text)
         self.assertIn("if: ${{ always() && !(github.event_name", text)
 

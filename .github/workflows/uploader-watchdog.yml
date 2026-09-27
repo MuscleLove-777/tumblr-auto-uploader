@@ -1,0 +1,38 @@
+name: Cloud Uploader Daily Watchdog
+on:
+  schedule:
+    - cron: '23 12 * * *'
+  workflow_dispatch:
+permissions:
+  contents: write
+  actions: write
+concurrency:
+  group: tumblr-publisher
+  cancel-in-progress: false
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Audit cloud uploaders and restore Tumblr schedule
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python cloud_watchdog.py
+      - name: Preserve actual daily audit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add cloud_watchdog_latest.json
+          git diff --cached --quiet || git commit -m "auto: daily cloud uploader audit [skip ci]"
+          git pull --rebase --autostash
+          git push
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: cloud-uploader-daily-audit
+          path: cloud_watchdog_latest.json
+          retention-days: 30

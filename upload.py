@@ -128,28 +128,8 @@ CAPTION_TEMPLATES = [
 
 
 def download_videos():
-    if gdown is None:
-        print("Error: gdown is required for live Google Drive material download. Use --dry-run for local preview.")
-        return []
-    dl_dir = "videos"
-    os.makedirs(dl_dir, exist_ok=True)
-    url = f"https://drive.google.com/drive/folders/{GDRIVE_FOLDER_ID}"
-    print(f"Downloading from Google Drive: {url}")
-    try:
-        gdown.download_folder(url, output=dl_dir, quiet=False)
-    except Exception as e:
-        print(f"Download error: {e}")
-
-    files = []
-    for root, dirs, filenames in os.walk(dl_dir):
-        for fname in filenames:
-            fpath = os.path.join(root, fname)
-            ext = os.path.splitext(fname)[1].lower()
-            if ext in VIDEO_EXTENSIONS:
-                size = os.path.getsize(fpath)
-                if size <= MAX_FILE_SIZE:
-                    files.append(fpath)
-    return eligible_videos(files)
+    from cloud_source import download_one
+    return download_one(gdown, GDRIVE_FOLDER_ID)
 
 
 def generate_tags(video_path):
@@ -364,10 +344,10 @@ def main(argv=None):
         print("Error: gdown is required for live Google Drive material download. Use --dry-run for local preview.")
         return 1
 
-    consumer_key = os.environ.get("TUMBLR_CONSUMER_KEY", "")
-    consumer_secret = os.environ.get("TUMBLR_CONSUMER_SECRET", "")
-    oauth_token = os.environ.get("TUMBLR_OAUTH_TOKEN", "")
-    oauth_token_secret = os.environ.get("TUMBLR_OAUTH_TOKEN_SECRET", "")
+    consumer_key = os.environ.get("TUMBLR_CONSUMER_KEY")
+    consumer_secret = os.environ.get("TUMBLR_CONSUMER_SECRET")
+    oauth_token = os.environ.get("TUMBLR_OAUTH_TOKEN")
+    oauth_token_secret = os.environ.get("TUMBLR_OAUTH_TOKEN_SECRET")
 
     if not all([consumer_key, consumer_secret, oauth_token, oauth_token_secret]):
         print("Error: Missing Tumblr credentials")
@@ -376,15 +356,30 @@ def main(argv=None):
     client = pytumblr.TumblrRestClient(consumer_key, consumer_secret, oauth_token, oauth_token_secret)
     info = client.info()
     if 'user' in info:
-        print(f"Auth OK: {info['user']['name']}")
+        print("Auth OK")
     else:
-        print(f"Auth error: {info}")
+        print("Auth failed")
         return 1
 
-    videos = approved_local if approved_local is not None else download_videos()
+    # An attempt may be retried after a runner interruption. A confirmed receipt
+    # is sufficient to finish the same run without publishing a second time.
+    run_id = os.environ.get("GITHUB_RUN_ID", "")
+    try:
+        previous = json.loads(Path("posted_log.json").read_text(encoding="utf-8"))
+        posts = previous if isinstance(previous, list) else previous.get("posts", [])
+        if run_id and any(p.get("run_id") == run_id and p.get("post_id") for p in posts):
+            print("CONFIRMED_RECEIPT same_run_already_posted")
+            return 0
+    except (OSError, ValueError):
+        pass
+    try:
+        videos = approved_local if approved_local is not None else download_videos()
+    except Exception as error:
+        print(f"SOURCE_FAILED type={type(error).__name__}")
+        return 1
     if not videos:
         print("No videos found!")
-        return 0
+        return 1
 
     print(f"\nTotal videos: {len(videos)}")
     video = random.choice(videos)
@@ -409,14 +404,17 @@ def main(argv=None):
                 "file": fname,
                 "variants": {"tumblr.caption": cap_vid},
                 "tags_count": len(tags),
+                "run_id": run_id,
             })
             return 0
         else:
-            print(f"Failed: {result}")
+            print("Upload rejected by provider")
             return 1
     except Exception as e:
-        print(f"Upload error: {e}")
-        return 1
+        print(f"UPLOAD_OUTCOME_UNKNOWN type={type(e).__name__}")
+        # A timeout may occur after the provider accepted the post. Do not
+        # blindly create a duplicate while handling the same run.
+        return 78
 
 
 if __name__ == '__main__':
