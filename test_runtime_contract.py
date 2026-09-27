@@ -13,6 +13,13 @@ class RuntimeContractTests(unittest.TestCase):
         self.assertIn("dispatch_local.py %*", text)
         self.assertNotIn("py -3", text)
 
+    def test_legacy_registration_is_opt_in_and_keeps_bom(self):
+        path = HERE / "install_scheduled_task.ps1"
+        self.assertTrue(path.read_bytes().startswith(b"\xef\xbb\xbf"))
+        text = path.read_text(encoding="utf-8-sig")
+        self.assertIn("[switch]$LegacyLocalSchedule", text)
+        self.assertLess(text.index("if (-not $LegacyLocalSchedule)"), text.index("Get-ScheduledTask"))
+
     def test_runner_forces_utf8(self):
         text = (HERE / "run_local_dispatch.cmd").read_text(encoding="utf-8-sig")
         self.assertIn('set "PYTHONUTF8=1"', text)

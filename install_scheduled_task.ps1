@@ -1,7 +1,13 @@
 ﻿[CmdletBinding(SupportsShouldProcess = $true, ConfirmImpact = 'Medium')]
 param(
-    [string]$TaskName = 'MuscleLove_Tumblr_LocalDispatch'
+    [string]$TaskName = 'MuscleLove_Tumblr_LocalDispatch',
+    [switch]$LegacyLocalSchedule
 )
+
+if (-not $LegacyLocalSchedule) {
+    Write-Output '定期投稿はGitHub Actionsで稼働します。旧Windows定期タスクは登録しません。'
+    return
+}
 
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
