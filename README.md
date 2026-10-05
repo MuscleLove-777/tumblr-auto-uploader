@@ -11,9 +11,11 @@
 素材なし・投稿失敗を成功扱いにせず、投稿結果不明の通信エラーは同じrunで再送しません。
 
 `uploader-watchdog.yml`は毎日21:23 JSTに独立して起動します。
-公開クラウドUploader 5リポジトリを監査し、Tumblr workflowが無効なら有効化します。
+Tumblr自身の投稿workflowを監査し、無効なら有効化します。
 24時間以上投稿がなく、直近24時間にpublisher実行も進行中runもなければ1枠だけ補います。
 定期設定が消えた場合もdaily dispatchで継続し、監査に異常を残します。
+監査がGitHub側のrunner割り当て前に失敗した場合は、別のrunnerイメージを使う
+`uploader-watchdog-retry.yml`が1回だけ再監査します。投稿runの失敗には再投稿しません。
 他の5リポジトリ（非公開1件を含む）は、それぞれの`uploader-watchdog.yml`で
 毎日21:43 JSTに自己監査し、承認済みpublisherが無効なら自動で有効化します。
 他リポジトリへの書込み権限や新しい認証情報は必要ありません。

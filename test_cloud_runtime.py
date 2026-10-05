@@ -8,6 +8,7 @@ from unittest.mock import patch
 
 import cloud_source
 import cloud_watchdog
+import cloud_watchdog_retry
 
 
 class CloudRuntimeTests(unittest.TestCase):
@@ -56,6 +57,29 @@ class CloudRuntimeTests(unittest.TestCase):
         self.assertIn("group: tumblr-publisher", text)
         self.assertNotIn("Require local source", text)
         self.assertEqual(text, Path("cloud_publisher.yml").read_text(encoding="utf-8"))
+
+    def test_watchdog_runs_separately_and_backup_has_no_publisher_trigger(self):
+        primary = Path(".github/workflows/uploader-watchdog.yml").read_text(encoding="utf-8")
+        backup = Path(".github/workflows/uploader-watchdog-retry.yml").read_text(encoding="utf-8")
+        self.assertIn("group: tumblr-watchdog\n  queue: max", primary)
+        self.assertIn("runs-on: ubuntu-24.04", primary)
+        self.assertIn("workflow_run:", backup)
+        self.assertIn("runs-on: ubuntu-22.04", backup)
+        self.assertNotIn("upload.yml/dispatches", backup)
+        self.assertEqual(cloud_watchdog.REPOS, ["tumblr-auto-uploader"])
+
+    def test_backup_gate_only_accepts_runner_acquisition_failure(self):
+        run = {"path": cloud_watchdog_retry.PRIMARY,
+               "event": "schedule", "conclusion": "failure"}
+        no_runner = [{"name": "audit", "conclusion": "cancelled",
+                      "runner_id": 0, "steps": []}]
+        self.assertTrue(cloud_watchdog_retry.should_retry(run, no_runner))
+        self.assertFalse(cloud_watchdog_retry.should_retry(
+            run, [{**no_runner[0], "steps": [{"name": "Audit"}]}]))
+        self.assertFalse(cloud_watchdog_retry.should_retry(
+            run, [{**no_runner[0], "runner_id": 123}]))
+        self.assertFalse(cloud_watchdog_retry.should_retry(
+            {**run, "path": ".github/workflows/upload.yml"}, no_runner))
 
 
 if __name__ == "__main__":

@@ -6,20 +6,15 @@ from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
 OWN = "MuscleLove-777/tumblr-auto-uploader"
-REPOS = ["tumblr-auto-uploader", "deviantart-auto-uploader",
-         "ameblo-auto-uploader", "fc2-auto-uploader", "hatena-auto-uploader"]
+REPOS = ["tumblr-auto-uploader"]
 PUBLISHERS = {
     "tumblr-auto-uploader": {".github/workflows/upload.yml"},
-    "deviantart-auto-uploader": {".github/workflows/upload.yml"},
-    "ameblo-auto-uploader": {".github/workflows/ameblo-post.yml"},
-    "fc2-auto-uploader": {".github/workflows/fc2-post.yml"},
-    "hatena-auto-uploader": {".github/workflows/hatena-post.yml", ".github/workflows/hatena-post-musclelove777.yml"},
 }
 
 
 def gh(*args):
     result = subprocess.run(["gh", *args], capture_output=True, text=True,
-                            encoding="utf-8", timeout=60)
+                            encoding="utf-8", timeout=45)
     if result.returncode:
         raise RuntimeError("GitHub API request failed")
     return json.loads(result.stdout) if result.stdout.strip() else None

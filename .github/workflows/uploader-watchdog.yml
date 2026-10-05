@@ -7,11 +7,11 @@ permissions:
   contents: write
   actions: write
 concurrency:
-  group: tumblr-publisher
-  cancel-in-progress: false
+  group: tumblr-watchdog
+  queue: max
 jobs:
   audit:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
@@ -20,7 +20,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Audit cloud uploaders and restore Tumblr schedule
+      - name: Audit Tumblr uploader and restore its schedule
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: python cloud_watchdog.py

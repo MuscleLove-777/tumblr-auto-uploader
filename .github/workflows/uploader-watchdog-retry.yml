@@ -1,0 +1,55 @@
+name: Cloud Uploader Watchdog Recovery
+on:
+  workflow_run:
+    workflows: [Cloud Uploader Daily Watchdog]
+    types: [completed]
+  workflow_dispatch:
+    inputs:
+      source_run_id:
+        description: Failed primary watchdog run ID to inspect
+        required: true
+        type: string
+permissions:
+  contents: write
+  actions: write
+concurrency:
+  group: tumblr-watchdog-recovery
+  queue: max
+jobs:
+  retry:
+    if: ${{ github.event_name == 'workflow_dispatch' || contains(fromJSON('["failure","cancelled","timed_out"]'), github.event.workflow_run.conclusion) }}
+    runs-on: ubuntu-22.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Confirm primary never acquired a runner
+        id: gate
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SOURCE_RUN_ID: ${{ github.event.inputs.source_run_id || github.event.workflow_run.id }}
+        run: python cloud_watchdog_retry.py
+      - name: Run one backup audit
+        if: steps.gate.outputs.retry == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python cloud_watchdog.py
+      - name: Preserve backup audit
+        if: always() && steps.gate.outputs.retry == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add cloud_watchdog_latest.json
+          git diff --cached --quiet || git commit -m "auto: backup cloud uploader audit [skip ci]"
+          git pull --rebase --autostash
+          git push
+      - uses: actions/upload-artifact@v4
+        if: always() && steps.gate.outputs.retry == 'true'
+        with:
+          name: cloud-uploader-backup-audit
+          path: cloud_watchdog_latest.json
+          retention-days: 30
