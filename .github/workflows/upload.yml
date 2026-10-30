@@ -31,21 +31,74 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 25
     steps:
+      - name: Check monthly business blackout
+        id: blackout
+        run: |
+          python3 - <<'PY'
+          import calendar
+          import os
+          from datetime import date, datetime, time, timedelta, timezone
+
+          # Read-only copy of the local holiday authority, verified 2026-10-30.
+          SOURCE = "https://www8.cao.go.jp/chosei/shukujitsu/gaiyou.html"
+          VERIFIED_DATE = "2026-10-30"
+          COVERAGE_YEARS = (2026, 2027)
+          HOLIDAYS = frozenset("""
+          2026-01-01 2026-01-12 2026-02-11 2026-02-23 2026-03-20 2026-04-29
+          2026-05-03 2026-05-04 2026-05-05 2026-05-06 2026-07-20 2026-08-11
+          2026-09-21 2026-09-22 2026-09-23 2026-10-12 2026-11-03 2026-11-23
+          2027-01-01 2027-01-11 2027-02-11 2027-02-23 2027-03-21 2027-03-22
+          2027-04-29 2027-05-03 2027-05-04 2027-05-05 2027-07-19 2027-08-11
+          2027-09-20 2027-09-23 2027-10-11 2027-11-03 2027-11-23
+          """.split())
+          JST = timezone(timedelta(hours=9))
+
+          def last_business_day(year, month):
+              day = date(year, month, calendar.monthrange(year, month)[1])
+              while day.weekday() >= 5 or day.isoformat() in HOLIDAYS:
+                  day -= timedelta(days=1)
+              return day
+
+          def workload_policy(now):
+              if now.utcoffset() is None:
+                  raise ValueError("timezone-aware time required")
+              local = now.astimezone(JST)
+              # Reserve 25m job + up to 5m cancellation + 1m before 19:00 JST.
+              guarded_time = time(18, 29) <= local.time() < time(20, 30)
+              if local.year not in COVERAGE_YEARS:
+                  last_week = local.day >= calendar.monthrange(local.year, local.month)[1] - 6
+                  if last_week and guarded_time:
+                      return False, "UNKNOWN_YEAR_CONSERVATIVE_HOLD"
+                  return True, "UNKNOWN_YEAR_OUTSIDE_GUARD"
+              if local.date() == last_business_day(local.year, local.month) and guarded_time:
+                  return False, "MONTH_END_BLACKOUT"
+              return True, "OUTSIDE_MONTH_END_BLACKOUT"
+
+          if __name__ == "__main__":
+              allow, reason = workload_policy(datetime.now(timezone.utc))
+              with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as output:
+                  output.write(f"allow_workload={str(allow).lower()}\nreason={reason}\n")
+              print(f"BLACKOUT_GATE {reason}")
+          PY
+
       - name: Checkout
+        if: ${{ steps.blackout.outputs.allow_workload == 'true' && !cancelled() && success() }}
         uses: actions/checkout@v4
         with:
           ref: main
 
       - name: Setup Python
+        if: ${{ steps.blackout.outputs.allow_workload == 'true' && !cancelled() && success() }}
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
 
       - name: Install dependencies
+        if: ${{ steps.blackout.outputs.allow_workload == 'true' && !cancelled() && success() }}
         run: pip install -r requirements.txt
 
       - name: Download dispatched local video
-        if: ${{ !(github.event_name == 'workflow_dispatch' && inputs.dry_run) && inputs.source_asset_name != '' }}
+        if: ${{ steps.blackout.outputs.allow_workload == 'true' && !cancelled() && success() && (!(github.event_name == 'workflow_dispatch' && inputs.dry_run) && inputs.source_asset_name != '') }}
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SOURCE_ASSET_NAME: ${{ inputs.source_asset_name }}
@@ -69,11 +122,11 @@ jobs:
 
       - name: Run dry-run preview
         id: dryrun
-        if: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run }}
+        if: ${{ steps.blackout.outputs.allow_workload == 'true' && !cancelled() && success() && (github.event_name == 'workflow_dispatch' && inputs.dry_run) }}
         run: python upload.py --dry-run
 
       - name: Upload dry-run preview artifact
-        if: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run }}
+        if: ${{ steps.blackout.outputs.allow_workload == 'true' && !cancelled() && success() && (github.event_name == 'workflow_dispatch' && inputs.dry_run) }}
         uses: actions/upload-artifact@v4
         with:
           name: tumblr-dry-run-preview
@@ -81,7 +134,7 @@ jobs:
 
       - name: Run upload (attempt 1)
         id: attempt1
-        if: ${{ !(github.event_name == 'workflow_dispatch' && inputs.dry_run) }}
+        if: ${{ steps.blackout.outputs.allow_workload == 'true' && !cancelled() && success() && (!(github.event_name == 'workflow_dispatch' && inputs.dry_run)) }}
         continue-on-error: true
         env:
           TUMBLR_CONSUMER_KEY: ${{ secrets.TUMBLR_CONSUMER_KEY }}
@@ -98,12 +151,12 @@ jobs:
           exit "$result"
 
       - name: Wait before retry 2
-        if: ${{ !(github.event_name == 'workflow_dispatch' && inputs.dry_run) && steps.attempt1.outcome == 'failure' && steps.attempt1.outputs.exit_code != '78' }}
+        if: ${{ steps.blackout.outputs.allow_workload == 'true' && !cancelled() && success() && (!(github.event_name == 'workflow_dispatch' && inputs.dry_run) && steps.attempt1.outcome == 'failure' && steps.attempt1.outputs.exit_code != '78') }}
         run: echo "Attempt 1 failed. Waiting 60s..." && sleep 60
 
       - name: Run upload (attempt 2)
         id: attempt2
-        if: ${{ !(github.event_name == 'workflow_dispatch' && inputs.dry_run) && steps.attempt1.outcome == 'failure' && steps.attempt1.outputs.exit_code != '78' }}
+        if: ${{ steps.blackout.outputs.allow_workload == 'true' && !cancelled() && success() && (!(github.event_name == 'workflow_dispatch' && inputs.dry_run) && steps.attempt1.outcome == 'failure' && steps.attempt1.outputs.exit_code != '78') }}
         continue-on-error: true
         env:
           TUMBLR_CONSUMER_KEY: ${{ secrets.TUMBLR_CONSUMER_KEY }}
@@ -120,12 +173,12 @@ jobs:
           exit "$result"
 
       - name: Wait before retry 3
-        if: ${{ !(github.event_name == 'workflow_dispatch' && inputs.dry_run) && steps.attempt1.outcome == 'failure' && steps.attempt2.outcome == 'failure' && steps.attempt2.outputs.exit_code != '78' }}
+        if: ${{ steps.blackout.outputs.allow_workload == 'true' && !cancelled() && success() && (!(github.event_name == 'workflow_dispatch' && inputs.dry_run) && steps.attempt1.outcome == 'failure' && steps.attempt2.outcome == 'failure' && steps.attempt2.outputs.exit_code != '78') }}
         run: echo "Attempt 2 failed. Waiting 120s..." && sleep 120
 
       - name: Run upload (attempt 3)
         id: attempt3
-        if: ${{ !(github.event_name == 'workflow_dispatch' && inputs.dry_run) && steps.attempt1.outcome == 'failure' && steps.attempt2.outcome == 'failure' && steps.attempt2.outputs.exit_code != '78' }}
+        if: ${{ steps.blackout.outputs.allow_workload == 'true' && !cancelled() && success() && (!(github.event_name == 'workflow_dispatch' && inputs.dry_run) && steps.attempt1.outcome == 'failure' && steps.attempt2.outcome == 'failure' && steps.attempt2.outputs.exit_code != '78') }}
         env:
           TUMBLR_CONSUMER_KEY: ${{ secrets.TUMBLR_CONSUMER_KEY }}
           TUMBLR_CONSUMER_SECRET: ${{ secrets.TUMBLR_CONSUMER_SECRET }}
@@ -136,11 +189,11 @@ jobs:
         run: python upload.py
 
       - name: Require confirmed publisher success
-        if: ${{ always() && !(github.event_name == 'workflow_dispatch' && inputs.dry_run) && steps.attempt1.outcome != 'success' && steps.attempt2.outcome != 'success' && steps.attempt3.outcome != 'success' }}
+        if: ${{ steps.blackout.outputs.allow_workload == 'true' && !cancelled() && (always() && !(github.event_name == 'workflow_dispatch' && inputs.dry_run) && steps.attempt1.outcome != 'success' && steps.attempt2.outcome != 'success' && steps.attempt3.outcome != 'success') }}
         run: exit 1
 
       - name: Collect engagement and commit variant logs
-        if: ${{ always() && !(github.event_name == 'workflow_dispatch' && inputs.dry_run) }}
+        if: ${{ steps.blackout.outputs.allow_workload == 'true' && !cancelled() && (always() && !(github.event_name == 'workflow_dispatch' && inputs.dry_run)) }}
         env:
           TUMBLR_CONSUMER_KEY: ${{ secrets.TUMBLR_CONSUMER_KEY }}
           TUMBLR_CONSUMER_SECRET: ${{ secrets.TUMBLR_CONSUMER_SECRET }}
@@ -157,14 +210,14 @@ jobs:
           git push
 
       - name: Delete temporary local-video asset
-        if: ${{ always() && inputs.source_asset_name != '' }}
+        if: ${{ steps.blackout.outputs.allow_workload == 'true' && !cancelled() && (always() && inputs.source_asset_name != '') }}
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SOURCE_ASSET_NAME: ${{ inputs.source_asset_name }}
         run: gh release delete-asset media-host "$SOURCE_ASSET_NAME" -y || true
 
       - name: LINE notify on failure
-        if: ${{ always() && !(github.event_name == 'workflow_dispatch' && inputs.dry_run) && steps.attempt1.outcome == 'failure' && (steps.attempt2.outcome == 'failure' || steps.attempt2.outcome == 'skipped') && (steps.attempt3.outcome == 'failure' || steps.attempt3.outcome == 'skipped') }}
+        if: ${{ steps.blackout.outputs.allow_workload == 'true' && !cancelled() && (always() && !(github.event_name == 'workflow_dispatch' && inputs.dry_run) && steps.attempt1.outcome == 'failure' && (steps.attempt2.outcome == 'failure' || steps.attempt2.outcome == 'skipped') && (steps.attempt3.outcome == 'failure' || steps.attempt3.outcome == 'skipped')) }}
         continue-on-error: true
         env:
           LINE_CHANNEL_TOKEN: ${{ secrets.LINE_CHANNEL_TOKEN }}
@@ -172,7 +225,7 @@ jobs:
         run: python notify.py failure
 
       - name: LINE notify on success
-        if: ${{ !(github.event_name == 'workflow_dispatch' && inputs.dry_run) && (steps.attempt1.outcome == 'success' || steps.attempt2.outcome == 'success' || steps.attempt3.outcome == 'success') }}
+        if: ${{ steps.blackout.outputs.allow_workload == 'true' && !cancelled() && success() && (!(github.event_name == 'workflow_dispatch' && inputs.dry_run) && (steps.attempt1.outcome == 'success' || steps.attempt2.outcome == 'success' || steps.attempt3.outcome == 'success')) }}
         continue-on-error: true
         env:
           LINE_CHANNEL_TOKEN: ${{ secrets.LINE_CHANNEL_TOKEN }}
